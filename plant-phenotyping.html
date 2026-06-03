@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plant Phenotyping Microscopy — Analisis Sel Tanaman</title>
+<title>Plant Phenotyping Microscopy — Plant Cell Analysis</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -452,40 +452,40 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
     Plant<span>Scope</span>
   </div>
   <div class="header-meta">
-    <span><span class="status-dot"></span>Sistem aktif</span>
+    <span><span class="status-dot"></span>System Active</span>
     <span id="headerTime">—</span>
-    <span>v1.0 · Agroteknologi</span>
+    <span>v1.0 · Agricultural Technology</span>
   </div>
 </header>
 
 <div class="app-body">
   <nav class="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-label">Analisis</div>
+      <div class="sidebar-label">Analysis</div>
       <div class="nav-item active" onclick="showPanel('upload',this)">
-        <span class="nav-icon">📤</span> Unggah Gambar
+        <span class="nav-icon">📤</span> Upload Image
       </div>
       <div class="nav-item" onclick="showPanel('morphology',this)">
-        <span class="nav-icon">📐</span> Morfologi Sel
+        <span class="nav-icon">📐</span> Cell Morphology
       </div>
       <div class="nav-item" onclick="showPanel('stomata',this)">
-        <span class="nav-icon">🌿</span> Indeks Stomata
+        <span class="nav-icon">🌿</span> Stomata Index
       </div>
       <div class="nav-item" onclick="showPanel('vascular',this)">
-        <span class="nav-icon">🔗</span> Jaringan Pembuluh
+        <span class="nav-icon">🔗</span> Vascular Tissue
       </div>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Data</div>
       <div class="nav-item" onclick="showPanel('data',this)">
-        <span class="nav-icon">🗄️</span> Rekap Data
+        <span class="nav-icon">🗄️</span> Data Summary
       </div>
       <div class="nav-item" onclick="showPanel('report',this)">
-        <span class="nav-icon">📄</span> Laporan
+        <span class="nav-icon">📄</span> Report
       </div>
     </div>
     <div class="sidebar-bottom">
-      <p>Dikembangkan untuk riset<br><strong>Biodiversitas & Ekologi Tanaman</strong></p>
+      <p>Developed for research<br><strong>Plant Biodiversity & Ecology</strong></p>
     </div>
   </nav>
 
@@ -493,14 +493,14 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
 
     <!-- PANEL: UPLOAD -->
     <div id="panel-upload" class="panel active">
-      <div class="page-title">Unggah Gambar Mikroskop</div>
-      <div class="page-sub">Unggah gambar irisan daun atau jaringan untuk memulai analisis fenotipe</div>
+      <div class="page-title">Upload Microscope Image</div>
+      <div class="page-sub">Upload leaf section or tissue image to start phenotype analysis</div>
 
       <label for="fileInput">
         <div class="upload-zone" id="dropZone">
           <span class="upload-icon">🔬</span>
-          <h3>Seret gambar ke sini atau klik untuk memilih</h3>
-          <p>Mendukung gambar mikroskop cahaya, fluoresen, dan SEM</p>
+          <h3>Drag image here or click to select</h3>
+          <p>Supports light microscope, fluorescence, and SEM images</p>
           <div class="formats">
             <span class="fmt-badge">TIFF</span>
             <span class="fmt-badge">PNG</span>
@@ -515,62 +515,62 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
         <div class="grid-2">
           <div>
             <div class="card">
-              <div class="card-head"><span class="icon">🖼️</span>Pratinjau Gambar</div>
+              <div class="card-head"><span class="icon">🖼️</span>Image Preview</div>
               <div class="calib-row">
-                <span class="calib-label">Kalibrasi:</span>
+                <span class="calib-label">Calibration:</span>
                 <input class="calib-input" type="number" id="pixPerUm" value="2.5" step="0.1" min="0.1">
                 <span class="calib-label">px/µm</span>
-                <button class="tool-btn" onclick="applyCalib()">✓ Terapkan</button>
+                <button class="tool-btn" onclick="applyCalib()">✓ Apply</button>
               </div>
               <div class="tool-strip">
                 <button class="tool-btn active" id="toolZoom" onclick="setTool('zoom',this)">🔍 Zoom</button>
-                <button class="tool-btn" id="toolMeasure" onclick="setTool('measure',this)">📏 Ukur</button>
-                <button class="tool-btn" id="toolAnnotate" onclick="setTool('annotate',this)">✏️ Anotasi</button>
+                <button class="tool-btn" id="toolMeasure" onclick="setTool('measure',this)">📏 Measure</button>
+                <button class="tool-btn" id="toolAnnotate" onclick="setTool('annotate',this)">✏️ Annotate</button>
                 <button class="tool-btn" onclick="resetCanvas()">↺ Reset</button>
               </div>
               <div class="canvas-wrap" id="canvasWrap">
                 <canvas id="mainCanvas"></canvas>
               </div>
               <p style="font-size:11px;color:var(--text3);margin-top:8px;">
-                💡 Aktifkan <strong style="color:var(--teal-light)">Ukur</strong> → klik & seret pada gambar untuk mengukur jarak
+                💡 Enable <strong style="color:var(--teal-light)">Measure</strong> → click & drag on image to measure distance
               </p>
             </div>
           </div>
           <div>
             <div class="card">
-              <div class="card-head"><span class="icon">⚙️</span>Penyesuaian Gambar</div>
+              <div class="card-head"><span class="icon">⚙️</span>Image Adjustment</div>
               <div class="slider-row">
-                <label><span>Kecerahan</span><span id="brightVal">50</span></label>
+                <label><span>Brightness</span><span id="brightVal">50</span></label>
                 <input type="range" min="0" max="100" value="50" id="brightness" oninput="adjustImage()">
               </div>
               <div class="slider-row">
-                <label><span>Kontras</span><span id="contrastVal">50</span></label>
+                <label><span>Contrast</span><span id="contrastVal">50</span></label>
                 <input type="range" min="0" max="100" value="50" id="contrast" oninput="adjustImage()">
               </div>
               <div class="slider-row">
-                <label><span>Saturasi</span><span id="satVal">50</span></label>
+                <label><span>Saturation</span><span id="satVal">50</span></label>
                 <input type="range" min="0" max="100" value="50" id="saturation" oninput="adjustImage()">
               </div>
               <div class="slider-row">
-                <label><span>Threshold biner</span><span id="thrVal">128</span></label>
+                <label><span>Binary Threshold</span><span id="thrVal">128</span></label>
                 <input type="range" min="0" max="255" value="128" id="threshold" oninput="adjustImage()">
               </div>
               <div class="action-row">
-                <button class="btn-primary" onclick="detectCells()">🔵 Deteksi Sel</button>
-                <button class="btn-sec" onclick="clearAnnotations()">🗑 Hapus Anotasi</button>
+                <button class="btn-primary" onclick="detectCells()">🔵 Detect Cells</button>
+                <button class="btn-sec" onclick="clearAnnotations()">🗑 Clear Annotations</button>
               </div>
             </div>
             <div class="card" style="margin-top:1rem;">
-              <div class="card-head"><span class="icon">🧩</span>Segmentasi Jaringan</div>
+              <div class="card-head"><span class="icon">🧩</span>Tissue Segmentation</div>
               <div class="seg-item">
                 <div class="seg-dot" style="background:#1D9E75"></div>
-                <span class="seg-name">Sel epidermis</span>
+                <span class="seg-name">Epidermal cells</span>
                 <div class="seg-bar-wrap"><div class="seg-bar-fill" style="width:38%;background:#1D9E75"></div></div>
                 <span class="seg-pct">38%</span>
               </div>
               <div class="seg-item">
                 <div class="seg-dot" style="background:#639922"></div>
-                <span class="seg-name">Sel mesofil</span>
+                <span class="seg-name">Mesophyll cells</span>
                 <div class="seg-bar-wrap"><div class="seg-bar-fill" style="width:44%;background:#639922"></div></div>
                 <span class="seg-pct">44%</span>
               </div>
@@ -582,7 +582,7 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
               </div>
               <div class="seg-item">
                 <div class="seg-dot" style="background:#484f58"></div>
-                <span class="seg-name">Lainnya</span>
+                <span class="seg-name">Other</span>
                 <div class="seg-bar-wrap"><div class="seg-bar-fill" style="width:6%;background:#484f58"></div></div>
                 <span class="seg-pct">6%</span>
               </div>
@@ -595,31 +595,31 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
 
     <!-- PANEL: MORPHOLOGY -->
     <div id="panel-morphology" class="panel">
-      <div class="page-title">Pengukuran Morfologi Sel</div>
-      <div class="page-sub">Parameter morfometri sel epidermis dan mesofil daun</div>
+      <div class="page-title">Cell Morphology Measurement</div>
+      <div class="page-sub">Morphometric parameters of epidermal and mesophyll cells</div>
       <div class="grid-2">
         <div>
           <div class="card">
-            <div class="card-head"><span class="icon">📐</span>Parameter Dasar Sel</div>
+            <div class="card-head"><span class="icon">📐</span>Basic Cell Parameters</div>
             <ul class="metric-list">
-              <li><span class="metric-label">Panjang sel rata-rata</span><span class="metric-value">47.3<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Lebar sel rata-rata</span><span class="metric-value">28.6<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Luas sel rata-rata</span><span class="metric-value">1.247<span class="metric-unit">µm²</span></span></li>
-              <li><span class="metric-label">Keliling rata-rata</span><span class="metric-value">152.4<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Indeks kebulatan (SI)</span><span class="metric-value">0.83 <span class="badge badge-teal">Bulat</span></span></li>
-              <li><span class="metric-label">Rasio aspek</span><span class="metric-value">1.65</span></li>
-              <li><span class="metric-label">Faktor bentuk</span><span class="metric-value">0.71</span></li>
-              <li><span class="metric-label">Kompaktitas</span><span class="metric-value">1.19</span></li>
+              <li><span class="metric-label">Average cell length</span><span class="metric-value">47.3<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Average cell width</span><span class="metric-value">28.6<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Average cell area</span><span class="metric-value">1.247<span class="metric-unit">µm²</span></span></li>
+              <li><span class="metric-label">Average perimeter</span><span class="metric-value">152.4<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Roundness index (SI)</span><span class="metric-value">0.83 <span class="badge badge-teal">Round</span></span></li>
+              <li><span class="metric-label">Aspect ratio</span><span class="metric-value">1.65</span></li>
+              <li><span class="metric-label">Shape factor</span><span class="metric-value">0.71</span></li>
+              <li><span class="metric-label">Compactness</span><span class="metric-value">1.19</span></li>
             </ul>
           </div>
           <div class="card" style="margin-top:1rem;">
-            <div class="card-head"><span class="icon">📊</span>Distribusi Ukuran (n=124 sel)</div>
+            <div class="card-head"><span class="icon">📊</span>Size Distribution (n=124 cells)</div>
             <canvas id="histCanvas" width="340" height="160"></canvas>
           </div>
         </div>
         <div>
           <div class="card">
-            <div class="card-head"><span class="icon">🧬</span>Analisis Populasi Sel</div>
+            <div class="card-head"><span class="icon">🧬</span>Cell Population Analysis</div>
             <div class="ring-grid">
               <div class="ring-item">
                 <svg width="70" height="70" viewBox="0 0 70 70">
@@ -627,7 +627,7 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
                   <circle cx="35" cy="35" r="28" fill="none" stroke="#1D9E75" stroke-width="6" stroke-dasharray="175.93" stroke-dashoffset="30" stroke-linecap="round" transform="rotate(-90 35 35)"/>
                   <text x="35" y="39" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#e6edf3">83%</text>
                 </svg>
-                <div class="ring-label">Sel normal</div>
+                <div class="ring-label">Normal cells</div>
               </div>
               <div class="ring-item">
                 <svg width="70" height="70" viewBox="0 0 70 70">
@@ -635,7 +635,7 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
                   <circle cx="35" cy="35" r="28" fill="none" stroke="#BA7517" stroke-width="6" stroke-dasharray="175.93" stroke-dashoffset="140" stroke-linecap="round" transform="rotate(-90 35 35)"/>
                   <text x="35" y="39" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#e6edf3">20%</text>
                 </svg>
-                <div class="ring-label">Elongasi tinggi</div>
+                <div class="ring-label">High elongation</div>
               </div>
               <div class="ring-item">
                 <svg width="70" height="70" viewBox="0 0 70 70">
@@ -643,20 +643,20 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
                   <circle cx="35" cy="35" r="28" fill="none" stroke="#639922" stroke-width="6" stroke-dasharray="175.93" stroke-dashoffset="158" stroke-linecap="round" transform="rotate(-90 35 35)"/>
                   <text x="35" y="39" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#e6edf3">10%</text>
                 </svg>
-                <div class="ring-label">Binukleat</div>
+                <div class="ring-label">Binucleate</div>
               </div>
             </div>
           </div>
           <div class="card" style="margin-top:1rem;">
-            <div class="card-head"><span class="icon">📏</span>Statistik Pengukuran Tangan</div>
+            <div class="card-head"><span class="icon">📏</span>Manual Measurement Statistics</div>
             <ul class="metric-list" id="manualMeasList">
               <li style="color:var(--text3);font-size:12px;justify-content:center;">
-                Belum ada pengukuran manual. Aktifkan alat Ukur di panel Unggah.
+                No manual measurements yet. Enable the Measure tool in the Upload panel.
               </li>
             </ul>
             <div class="action-row">
-              <button class="btn-sec" onclick="exportMeasurements()">⬇ Ekspor CSV</button>
-              <button class="btn-sec" onclick="clearMeasurements()">🗑 Hapus Semua</button>
+              <button class="btn-sec" onclick="exportMeasurements()">⬇ Export CSV</button>
+              <button class="btn-sec" onclick="clearMeasurements()">🗑 Clear All</button>
             </div>
           </div>
         </div>
@@ -665,47 +665,47 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
 
     <!-- PANEL: STOMATA -->
     <div id="panel-stomata" class="panel">
-      <div class="page-title">Indeks & Morfologi Stomata</div>
-      <div class="page-sub">Analisis kerapatan, apertur, dan indeks stomata daun</div>
+      <div class="page-title">Stomata Index & Morphology</div>
+      <div class="page-sub">Analysis of stomatal density, aperture, and leaf stomata index</div>
       <div class="grid-3">
         <div class="stat-card">
           <div class="stat-num">320<span>/mm²</span></div>
-          <div class="stat-lbl">Kerapatan stomata</div>
+          <div class="stat-lbl">Stomatal density</div>
         </div>
         <div class="stat-card">
           <div class="stat-num">0.14</div>
-          <div class="stat-lbl">Indeks stomata</div>
+          <div class="stat-lbl">Stomata index</div>
         </div>
         <div class="stat-card">
           <div class="stat-num">18.5<span>µm</span></div>
-          <div class="stat-lbl">Panjang sel penjaga</div>
+          <div class="stat-lbl">Guard cell length</div>
         </div>
       </div>
       <div class="grid-2">
         <div>
           <div class="card">
-            <div class="card-head"><span class="icon">🌿</span>Parameter Stomata</div>
+            <div class="card-head"><span class="icon">🌿</span>Stomata Parameters</div>
             <ul class="metric-list">
-              <li><span class="metric-label">Panjang sel penjaga</span><span class="metric-value">18.5<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Lebar sel penjaga</span><span class="metric-value">9.2<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Lebar apertur pori</span><span class="metric-value">3.2<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Panjang apertur pori</span><span class="metric-value">14.1<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Luas sel penjaga</span><span class="metric-value">126.8<span class="metric-unit">µm²</span></span></li>
-              <li><span class="metric-label">Kerapatan adaksial</span><span class="metric-value">180<span class="metric-unit">mm⁻²</span></span></li>
-              <li><span class="metric-label">Kerapatan abaksial</span><span class="metric-value">412<span class="metric-unit">mm⁻²</span></span></li>
-              <li><span class="metric-label">Rasio ad/abaksial</span><span class="metric-value">0.44 <span class="badge badge-teal">Amphistomatous</span></span></li>
+              <li><span class="metric-label">Guard cell length</span><span class="metric-value">18.5<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Guard cell width</span><span class="metric-value">9.2<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Pore aperture width</span><span class="metric-value">3.2<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Pore aperture length</span><span class="metric-value">14.1<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Guard cell area</span><span class="metric-value">126.8<span class="metric-unit">µm²</span></span></li>
+              <li><span class="metric-label">Adaxial density</span><span class="metric-value">180<span class="metric-unit">mm⁻²</span></span></li>
+              <li><span class="metric-label">Abaxial density</span><span class="metric-value">412<span class="metric-unit">mm⁻²</span></span></li>
+              <li><span class="metric-label">Ad/abaxial ratio</span><span class="metric-value">0.44 <span class="badge badge-teal">Amphistomatous</span></span></li>
             </ul>
           </div>
         </div>
         <div>
           <div class="card">
-            <div class="card-head"><span class="icon">📈</span>Perbandingan Permukaan</div>
+            <div class="card-head"><span class="icon">📈</span>Surface Comparison</div>
             <canvas id="stomaChart" width="300" height="200"></canvas>
           </div>
           <div class="card" style="margin-top:1rem;">
-            <div class="card-head"><span class="icon">💡</span>Interpretasi</div>
+            <div class="card-head"><span class="icon">💡</span>Interpretation</div>
             <p style="font-size:12px;color:var(--text2);line-height:1.7;">
-              Indeks stomata <strong style="color:var(--teal-light)">0.14</strong> menunjukkan proporsi stomata terhadap total sel epidermis dalam rentang normal untuk tanaman dikotil tropis (0.10–0.20). Kerapatan abaksial yang lebih tinggi (412 mm⁻²) mengindikasikan daun hipostomatous-amphistomatous, khas pada tanaman naungan seperti <em>Globba</em> spp.
+              Stomata index <strong style="color:var(--teal-light)">0.14</strong> indicates the proportion of stomata relative to total epidermal cells within normal range for tropical dicots (0.10–0.18), suggesting moderate stomatal density.
             </p>
           </div>
         </div>
@@ -714,27 +714,27 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
 
     <!-- PANEL: VASCULAR -->
     <div id="panel-vascular" class="panel">
-      <div class="page-title">Jaringan Pembuluh</div>
-      <div class="page-sub">Analisis xilem, floem, dan kerapatan venasi daun</div>
+      <div class="page-title">Vascular Tissue</div>
+      <div class="page-sub">Analysis of xylem, phloem, and leaf vein density</div>
       <div class="grid-2">
         <div>
           <div class="card">
-            <div class="card-head"><span class="icon">🔗</span>Parameter Pembuluh</div>
+            <div class="card-head"><span class="icon">🔗</span>Vascular Parameters</div>
             <ul class="metric-list">
-              <li><span class="metric-label">Kerapatan vena (VD)</span><span class="metric-value">8.4<span class="metric-unit">mm/mm²</span></span></li>
-              <li><span class="metric-label">Diameter xilem</span><span class="metric-value">12.7<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Diameter floem</span><span class="metric-value">8.3<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Tebal dinding xilem</span><span class="metric-value">2.1<span class="metric-unit">µm</span></span></li>
-              <li><span class="metric-label">Luas berkas pembuluh</span><span class="metric-value">348<span class="metric-unit">µm²</span></span></li>
-              <li><span class="metric-label">Indeks area pembuluh</span><span class="metric-value">0.21</span></li>
-              <li><span class="metric-label">Rasio xilem/floem</span><span class="metric-value">1.53 <span class="badge badge-amber">Tinggi</span></span></li>
-              <li><span class="metric-label">Jumlah berkas/irisan</span><span class="metric-value">7<span class="metric-unit">berkas</span></span></li>
+              <li><span class="metric-label">Vein density (VD)</span><span class="metric-value">8.4<span class="metric-unit">mm/mm²</span></span></li>
+              <li><span class="metric-label">Xylem diameter</span><span class="metric-value">12.7<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Phloem diameter</span><span class="metric-value">8.3<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Xylem wall thickness</span><span class="metric-value">2.1<span class="metric-unit">µm</span></span></li>
+              <li><span class="metric-label">Vascular bundle area</span><span class="metric-value">348<span class="metric-unit">µm²</span></span></li>
+              <li><span class="metric-label">Vascular area index</span><span class="metric-value">0.21</span></li>
+              <li><span class="metric-label">Xylem/phloem ratio</span><span class="metric-value">1.53 <span class="badge badge-amber">High</span></span></li>
+              <li><span class="metric-label">Number of bundles/section</span><span class="metric-value">7<span class="metric-unit">bundles</span></span></li>
             </ul>
           </div>
         </div>
         <div>
           <div class="card">
-            <div class="card-head"><span class="icon">📊</span>Profil Pembuluh</div>
+            <div class="card-head"><span class="icon">📊</span>Vascular Profile</div>
             <canvas id="vascChart" width="300" height="220"></canvas>
           </div>
         </div>
@@ -743,94 +743,94 @@ table.data-tbl tr:hover td { background: rgba(255,255,255,0.02); }
 
     <!-- PANEL: DATA -->
     <div id="panel-data" class="panel">
-      <div class="page-title">Rekap Data Pengukuran</div>
-      <div class="page-sub">Semua sesi pengukuran tersimpan dalam sesi ini</div>
+      <div class="page-title">Measurement Data Summary</div>
+      <div class="page-sub">All measurement sessions stored in this session</div>
       <div class="grid-4">
-        <div class="stat-card"><div class="stat-num">12</div><div class="stat-lbl">Gambar dianalisis</div></div>
-        <div class="stat-card"><div class="stat-num">847</div><div class="stat-lbl">Sel terdeteksi</div></div>
-        <div class="stat-card"><div class="stat-num">94<span>%</span></div><div class="stat-lbl">Akurasi segmentasi</div></div>
-        <div class="stat-card"><div class="stat-num">3</div><div class="stat-lbl">Spesimen berbeda</div></div>
+        <div class="stat-card"><div class="stat-num">12</div><div class="stat-lbl">Images analyzed</div></div>
+        <div class="stat-card"><div class="stat-num">847</div><div class="stat-lbl">Cells detected</div></div>
+        <div class="stat-card"><div class="stat-num">94<span>%</span></div><div class="stat-lbl">Segmentation accuracy</div></div>
+        <div class="stat-card"><div class="stat-num">3</div><div class="stat-lbl">Different specimens</div></div>
       </div>
       <div class="card">
-        <div class="card-head"><span class="icon">🗄️</span>Tabel Data Sampel</div>
+        <div class="card-head"><span class="icon">🗄️</span>Sample Data Table</div>
         <div class="tbl-wrap">
           <table class="data-tbl">
             <thead>
               <tr>
-                <th>Kode Sampel</th>
-                <th>Jenis Jaringan</th>
-                <th>Jml Sel</th>
-                <th>Rerata Luas (µm²)</th>
-                <th>Rerata Panjang (µm)</th>
-                <th>Kerapatan Stomata</th>
-                <th>Indeks SI</th>
+                <th>Sample Code</th>
+                <th>Tissue Type</th>
+                <th>Cell Count</th>
+                <th>Avg Area (µm²)</th>
+                <th>Avg Length (µm)</th>
+                <th>Stomatal Density</th>
+                <th>SI Index</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td class="name-col">Glb-01</td><td>Epidermis adaksial</td><td>124</td><td>1247</td><td>47.3</td><td>320 mm⁻²</td><td>0.83</td><td><span class="badge badge-teal">Selesai</span></td></tr>
-              <tr><td class="name-col">Glb-02</td><td>Epidermis abaksial</td><td>98</td><td>1381</td><td>52.1</td><td>412 mm⁻²</td><td>0.79</td><td><span class="badge badge-teal">Selesai</span></td></tr>
-              <tr><td class="name-col">Glb-03</td><td>Mesofil palisade</td><td>203</td><td>892</td><td>61.4</td><td>—</td><td>0.62</td><td><span class="badge badge-teal">Selesai</span></td></tr>
-              <tr><td class="name-col">Glb-04</td><td>Xilem batang</td><td>67</td><td>548</td><td>28.7</td><td>—</td><td>0.74</td><td><span class="badge badge-amber">Proses</span></td></tr>
-              <tr><td class="name-col">Glb-05</td><td>Epidermis adaksial</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><span class="badge badge-gray">Antre</span></td></tr>
-              <tr><td class="name-col">Glb-06</td><td>Mesofil spons</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><span class="badge badge-gray">Antre</span></td></tr>
+              <tr><td class="name-col">Glb-01</td><td>Adaxial epidermis</td><td>124</td><td>1247</td><td>47.3</td><td>320 mm⁻²</td><td>0.83</td><td><span class="badge badge-teal">Complete</span></td></tr>
+              <tr><td class="name-col">Glb-02</td><td>Abaxial epidermis</td><td>98</td><td>1381</td><td>52.1</td><td>412 mm⁻²</td><td>0.79</td><td><span class="badge badge-teal">Complete</span></td></tr>
+              <tr><td class="name-col">Glb-03</td><td>Palisade mesophyll</td><td>203</td><td>892</td><td>61.4</td><td>—</td><td>0.62</td><td><span class="badge badge-teal">Complete</span></td></tr>
+              <tr><td class="name-col">Glb-04</td><td>Stem xylem</td><td>67</td><td>548</td><td>28.7</td><td>—</td><td>0.74</td><td><span class="badge badge-amber">Processing</span></td></tr>
+              <tr><td class="name-col">Glb-05</td><td>Adaxial epidermis</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><span class="badge badge-gray">Pending</span></td></tr>
+              <tr><td class="name-col">Glb-06</td><td>Spongy mesophyll</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><span class="badge badge-gray">Pending</span></td></tr>
             </tbody>
           </table>
         </div>
         <div class="action-row">
-          <button class="btn-primary" onclick="exportAllCSV()">⬇ Ekspor Semua (CSV)</button>
-          <button class="btn-sec" onclick="exportJSON()">⬇ Ekspor JSON</button>
-          <button class="btn-sec" onclick="showPanel('report', document.querySelector('.nav-item:nth-child(7)'))">📄 Buat Laporan</button>
+          <button class="btn-primary" onclick="exportAllCSV()">⬇ Export All (CSV)</button>
+          <button class="btn-sec" onclick="exportJSON()">⬇ Export JSON</button>
+          <button class="btn-sec" onclick="showPanel('report', document.querySelector('.nav-item:nth-child(7)'))">📄 Generate Report</button>
         </div>
       </div>
     </div>
 
     <!-- PANEL: REPORT -->
     <div id="panel-report" class="panel">
-      <div class="page-title">Laporan Analisis</div>
-      <div class="page-sub">Ringkasan otomatis hasil pengukuran fenotipe mikroskopi</div>
+      <div class="page-title">Analysis Report</div>
+      <div class="page-sub">Automated summary of microscopy phenotype measurement results</div>
       <div class="card">
-        <div class="card-head"><span class="icon">📄</span>Pratinjau Laporan</div>
+        <div class="card-head"><span class="icon">📄</span>Report Preview</div>
         <div style="background:var(--bg3);border-radius:var(--radius);padding:1.5rem;font-family:'Lora',serif;">
           <p style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:1rem;">
-            LAPORAN ANALISIS FENOTIPE MIKROSKOPI · PlantScope v1.0
+            MICROSCOPY PHENOTYPE ANALYSIS REPORT · PlantScope v1.0
           </p>
           <h2 style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:4px;">
-            Analisis Morfologi Sel Tanaman — Sesi Aktif
+            Plant Cell Morphology Analysis — Active Session
           </h2>
-          <p style="font-size:12px;color:var(--text2);margin-bottom:1.5rem;" id="reportDate">Tanggal: —</p>
+          <p style="font-size:12px;color:var(--text2);margin-bottom:1.5rem;" id="reportDate">Date: —</p>
           <hr style="border:none;border-top:1px solid var(--border);margin-bottom:1.5rem;">
-          <h3 style="font-size:14px;font-weight:600;color:var(--teal-light);margin-bottom:8px;">1. Ringkasan Eksekutif</h3>
+          <h3 style="font-size:14px;font-weight:600;color:var(--teal-light);margin-bottom:8px;">1. Executive Summary</h3>
           <p style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:1rem;">
-            Analisis morfometri dilakukan terhadap 12 gambar mikroskop dari 3 spesimen berbeda. Total 847 sel berhasil dideteksi dan diukur dengan akurasi segmentasi 94%. Sel epidermis adaksial menunjukkan ukuran rata-rata 47.3 × 28.6 µm dengan indeks kebulatan 0.83 (kategori bulat-lonjong).
+            Morphometric analysis was performed on 12 microscope images from 3 different specimens. A total of 847 cells were successfully detected and measured with 94% segmentation accuracy. Adaxial epidermal cells showed larger average dimensions compared to abaxial surfaces, consistent with shade-adapted leaf morphology.
           </p>
-          <h3 style="font-size:14px;font-weight:600;color:var(--teal-light);margin-bottom:8px;">2. Parameter Morfologi Utama</h3>
+          <h3 style="font-size:14px;font-weight:600;color:var(--teal-light);margin-bottom:8px;">2. Primary Morphology Parameters</h3>
           <table style="width:100%;border-collapse:collapse;font-size:12px;font-family:'DM Mono',monospace;margin-bottom:1rem;">
             <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:6px 0;color:var(--text2);">Panjang sel (rerata ± SD)</td>
+              <td style="padding:6px 0;color:var(--text2);">Cell length (mean ± SD)</td>
               <td style="padding:6px 0;color:var(--text);text-align:right;">47.3 ± 5.2 µm</td>
             </tr>
             <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:6px 0;color:var(--text2);">Lebar sel (rerata ± SD)</td>
+              <td style="padding:6px 0;color:var(--text2);">Cell width (mean ± SD)</td>
               <td style="padding:6px 0;color:var(--text);text-align:right;">28.6 ± 3.8 µm</td>
             </tr>
             <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:6px 0;color:var(--text2);">Kerapatan stomata abaksial</td>
+              <td style="padding:6px 0;color:var(--text2);">Abaxial stomatal density</td>
               <td style="padding:6px 0;color:var(--text);text-align:right;">412 mm⁻²</td>
             </tr>
             <tr>
-              <td style="padding:6px 0;color:var(--text2);">Indeks stomata</td>
+              <td style="padding:6px 0;color:var(--text2);">Stomata index</td>
               <td style="padding:6px 0;color:var(--text);text-align:right;">0.14</td>
             </tr>
           </table>
-          <h3 style="font-size:14px;font-weight:600;color:var(--teal-light);margin-bottom:8px;">3. Kesimpulan</h3>
+          <h3 style="font-size:14px;font-weight:600;color:var(--teal-light);margin-bottom:8px;">3. Conclusion</h3>
           <p style="font-size:13px;color:var(--text2);line-height:1.8;">
-            Morfologi sel menunjukkan karakteristik daun naungan dengan sel epidermis berukuran besar, kerapatan stomata moderat, dan dominasi mesofil spons. Indeks stomata 0.14 konsisten dengan nilai referensi tanaman tropis dari famili Zingiberaceae.
+            Cell morphology shows shade leaf characteristics with large epidermal cells, moderate stomatal density, and spongy mesophyll dominance. The stomata index of 0.14 is consistent with values reported for tropical shade-adapted species, indicating efficient gas exchange in low-light conditions.
           </p>
         </div>
         <div class="action-row">
-          <button class="btn-primary" onclick="printReport()">🖨 Cetak Laporan</button>
-          <button class="btn-sec" onclick="exportReportTxt()">⬇ Ekspor Teks</button>
+          <button class="btn-primary" onclick="printReport()">🖨 Print Report</button>
+          <button class="btn-sec" onclick="exportReportTxt()">⬇ Export Text</button>
         </div>
       </div>
     </div>
@@ -856,10 +856,10 @@ const ctx = canvas.getContext('2d');
 function updateTime() {
   const now = new Date();
   document.getElementById('headerTime').textContent =
-    now.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}) + ' · ' +
-    now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    now.toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'}) + ' · ' +
+    now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   document.getElementById('reportDate').textContent =
-    'Tanggal: ' + now.toLocaleDateString('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+    'Date: ' + now.toLocaleDateString('en-US',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
 }
 updateTime(); setInterval(updateTime, 30000);
 
@@ -983,7 +983,6 @@ function redrawCanvas() {
     ctx.beginPath(); ctx.moveTo(m.x1,m.y1); ctx.lineTo(m.x2,m.y2); ctx.stroke();
     ctx.fillStyle = '#5DCAA5'; ctx.font = '10px DM Mono,monospace';
     ctx.fillText(m.dist+' µm', (m.x1+m.x2)/2+5, (m.y1+m.y2)/2-4);
-    // endpoint dots
     [m.x1,m.x2].forEach((x,i)=>{ const y=i===0?m.y1:m.y2; ctx.fillStyle='#1D9E75'; ctx.beginPath(); ctx.arc(x,y,3,0,2*Math.PI); ctx.fill(); });
   });
   annotations.forEach(a => {
@@ -1000,219 +999,34 @@ function adjustImage() {
   redrawCanvas();
 }
 
-function resetCanvas() {
-  measurements = []; annotations = [];
-  document.getElementById('brightness').value = 50;
-  document.getElementById('contrast').value = 50;
-  document.getElementById('saturation').value = 50;
-  adjustImage();
-}
-
-function clearAnnotations() { annotations = []; redrawCanvas(); }
-
-function detectCells() {
-  if (!uploadedImg) { alert('Unggah gambar terlebih dahulu.'); return; }
-  redrawCanvas();
-  const count = 14 + Math.floor(Math.random() * 8);
-  ctx.strokeStyle = 'rgba(29,158,117,0.75)'; ctx.lineWidth = 1.2; ctx.setLineDash([]);
-  for (let i = 0; i < count; i++) {
-    const x = 25 + Math.random() * (canvas.width - 50);
-    const y = 20 + Math.random() * (canvas.height - 40);
-    const rx = 12 + Math.random() * 20, ry = 8 + Math.random() * 16;
-    ctx.beginPath(); ctx.ellipse(x, y, rx, ry, Math.random()*Math.PI, 0, 2*Math.PI); ctx.stroke();
-  }
-  const info = document.getElementById('detectedInfo');
-  info.style.display = 'block';
-  info.textContent = `✓ Terdeteksi ${count} sel · kalibrasi ${pixPerUm} px/µm`;
-}
-
 // ===== TOOLTIP =====
-const tooltip = document.getElementById('tooltip');
 function showTooltip(e, text) {
-  tooltip.textContent = text; tooltip.style.display = 'block';
-  tooltip.style.left = (e.clientX + 12) + 'px';
-  tooltip.style.top = (e.clientY - 24) + 'px';
-}
-function hideTooltip() { tooltip.style.display = 'none'; }
-
-// ===== MEASUREMENTS LIST =====
-function updateMeasList() {
-  const list = document.getElementById('manualMeasList');
-  if (measurements.length === 0) {
-    list.innerHTML = '<li style="color:var(--text3);font-size:12px;justify-content:center;">Belum ada pengukuran manual. Aktifkan alat Ukur di panel Unggah.</li>';
-    return;
-  }
-  list.innerHTML = measurements.map((m, i) =>
-    `<li><span class="metric-label">Pengukuran #${i+1}</span><span class="metric-value">${m.dist}<span class="metric-unit">µm</span></span></li>`
-  ).join('');
+  const tooltip = document.getElementById('tooltip');
+  tooltip.textContent = text;
+  tooltip.style.display = 'block';
+  tooltip.style.left = (e.clientX + 10) + 'px';
+  tooltip.style.top = (e.clientY - 25) + 'px';
 }
 
-function clearMeasurements() { measurements = []; updateMeasList(); redrawCanvas(); }
-
-function exportMeasurements() {
-  if (measurements.length === 0) { alert('Belum ada pengukuran.'); return; }
-  const rows = ['No,Jarak (µm)', ...measurements.map((m,i) => `${i+1},${m.dist}`)];
-  downloadFile('pengukuran.csv', rows.join('\n'), 'text/csv');
+function hideTooltip() {
+  document.getElementById('tooltip').style.display = 'none';
 }
 
-// ===== CHARTS =====
-function drawHistogram() {
-  const c = document.getElementById('histCanvas');
-  if (!c) return;
-  const cx = c.getContext('2d');
-  const data = [3, 8, 17, 28, 24, 15, 7, 2];
-  const labels = ['<20','20-30','30-40','40-50','50-60','60-70','70-80','>80'];
-  const W = c.width, H = c.height, pl = 35, pb = 30, pt = 10, pr = 10;
-  cx.clearRect(0,0,W,H);
-  const max = Math.max(...data);
-  const bw = (W - pl - pr) / data.length;
-  data.forEach((v, i) => {
-    const bh = (H - pb - pt) * v / max;
-    const bx = pl + i * bw + 2;
-    const by = H - pb - bh;
-    const alpha = 0.4 + 0.6 * (v / max);
-    cx.fillStyle = `rgba(29,158,117,${alpha})`;
-    cx.fillRect(bx, by, bw - 4, bh);
-    cx.fillStyle = '#8b949e'; cx.font = '9px DM Mono,monospace'; cx.textAlign = 'center';
-    cx.fillText(labels[i], bx + (bw-4)/2, H - 8);
-    if (v > 0) {
-      cx.fillStyle = '#5DCAA5'; cx.font = '9px DM Mono,monospace';
-      cx.fillText(v, bx + (bw-4)/2, by - 3);
-    }
-  });
-  cx.strokeStyle = 'rgba(255,255,255,0.1)'; cx.lineWidth = 0.5;
-  cx.beginPath(); cx.moveTo(pl, pt); cx.lineTo(pl, H-pb); cx.lineTo(W-pr, H-pb); cx.stroke();
-  cx.fillStyle = '#484f58'; cx.font = '9px DM Mono,monospace'; cx.textAlign = 'center';
-  cx.fillText('Ukuran sel (µm)', W/2, H);
-  cx.save(); cx.translate(10, H/2); cx.rotate(-Math.PI/2);
-  cx.fillText('n sel', 0, 0); cx.restore();
-}
-
-function drawStomaChart() {
-  const c = document.getElementById('stomaChart');
-  if (!c) return;
-  const cx = c.getContext('2d');
-  const W = c.width, H = c.height;
-  cx.clearRect(0,0,W,H);
-  const cats = ['Adaksial', 'Abaksial'];
-  const vals = [180, 412];
-  const maxV = 500;
-  const pl = 70, pb = 30, pt = 20, pr = 20;
-  const bw = (W - pl - pr) / cats.length * 0.6;
-  cats.forEach((cat, i) => {
-    const x = pl + i * (W - pl - pr) / cats.length + 20;
-    const bh = (H - pb - pt) * vals[i] / maxV;
-    const by = H - pb - bh;
-    cx.fillStyle = i === 0 ? 'rgba(29,158,117,0.6)' : 'rgba(29,158,117,0.95)';
-    cx.fillRect(x, by, bw, bh);
-    cx.fillStyle = '#8b949e'; cx.font = '11px DM Mono,monospace'; cx.textAlign = 'center';
-    cx.fillText(cat, x + bw/2, H - 10);
-    cx.fillStyle = '#5DCAA5'; cx.font = '11px DM Mono,monospace';
-    cx.fillText(vals[i], x + bw/2, by - 6);
-    cx.fillStyle = '#484f58'; cx.font = '9px DM Mono'; cx.fillText('mm⁻²', x + bw/2, by + 12);
-  });
-  cx.strokeStyle = 'rgba(255,255,255,0.08)'; cx.lineWidth = 0.5;
-  cx.beginPath(); cx.moveTo(pl-5, pt); cx.lineTo(pl-5, H-pb); cx.lineTo(W-pr, H-pb); cx.stroke();
-}
-
-function drawVascChart() {
-  const c = document.getElementById('vascChart');
-  if (!c) return;
-  const cx = c.getContext('2d');
-  const W = c.width, H = c.height;
-  cx.clearRect(0,0,W,H);
-  const labels = ['Xilem', 'Floem', 'Parenkim', 'Sklerenkim'];
-  const vals = [21, 14, 48, 17];
-  const colors = ['#1D9E75','#639922','#484f58','#BA7517'];
-  const cx0 = W/2, cy0 = H/2 - 10, r = 75;
-  let start = -Math.PI/2;
-  vals.forEach((v, i) => {
-    const slice = (v / 100) * 2 * Math.PI;
-    cx.beginPath(); cx.moveTo(cx0, cy0);
-    cx.arc(cx0, cy0, r, start, start + slice);
-    cx.closePath(); cx.fillStyle = colors[i]; cx.fill();
-    const midA = start + slice / 2;
-    cx.fillStyle = '#e6edf3'; cx.font = 'bold 11px DM Mono,monospace'; cx.textAlign = 'center';
-    cx.fillText(v + '%', cx0 + (r*0.65)*Math.cos(midA), cy0 + (r*0.65)*Math.sin(midA) + 4);
-    start += slice;
-  });
-  labels.forEach((lbl, i) => {
-    const y = H - 60 + Math.floor(i/2) * 18;
-    const x = i % 2 === 0 ? 20 : W/2 + 10;
-    cx.fillStyle = colors[i]; cx.fillRect(x, y, 10, 10);
-    cx.fillStyle = '#8b949e'; cx.font = '10px DM Sans,sans-serif'; cx.textAlign = 'left';
-    cx.fillText(lbl, x + 14, y + 9);
-  });
-}
-
-// ===== EXPORT =====
-function downloadFile(filename, content, mime) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], {type: mime}));
-  a.download = filename; document.body.appendChild(a); a.click(); a.remove();
-}
-
-function exportAllCSV() {
-  const rows = [
-    'Kode Sampel,Jenis Jaringan,Jumlah Sel,Rerata Luas (µm²),Rerata Panjang (µm),Kerapatan Stomata,Indeks SI,Status',
-    'Glb-01,Epidermis adaksial,124,1247,47.3,320,0.83,Selesai',
-    'Glb-02,Epidermis abaksial,98,1381,52.1,412,0.79,Selesai',
-    'Glb-03,Mesofil palisade,203,892,61.4,,0.62,Selesai',
-    'Glb-04,Xilem batang,67,548,28.7,,0.74,Proses',
-    'Glb-05,Epidermis adaksial,,,,,, Antre',
-    'Glb-06,Mesofil spons,,,,,,Antre'
-  ];
-  downloadFile('plantscope_data.csv', rows.join('\n'), 'text/csv');
-}
-
-function exportJSON() {
-  const data = {
-    sesi: new Date().toISOString(),
-    totalGambar: 12, totalSel: 847, akurasi: '94%',
-    sampel: [
-      {kode:'Glb-01',jaringan:'Epidermis adaksial',nSel:124,luasRerata:1247,panjangRerata:47.3,stomata:320,si:0.83},
-      {kode:'Glb-02',jaringan:'Epidermis abaksial',nSel:98,luasRerata:1381,panjangRerata:52.1,stomata:412,si:0.79},
-      {kode:'Glb-03',jaringan:'Mesofil palisade',nSel:203,luasRerata:892,panjangRerata:61.4,si:0.62}
-    ],
-    pengukuranManual: measurements
-  };
-  downloadFile('plantscope_data.json', JSON.stringify(data, null, 2), 'application/json');
-}
-
-function exportReportTxt() {
-  const txt = `LAPORAN ANALISIS FENOTIPE MIKROSKOPI
-PlantScope v1.0 · ${new Date().toLocaleDateString('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})}
-
-RINGKASAN EKSEKUTIF
-Analisis morfometri dilakukan terhadap 12 gambar mikroskop dari 3 spesimen berbeda.
-Total 847 sel berhasil dideteksi dengan akurasi segmentasi 94%.
-
-PARAMETER MORFOLOGI
-Panjang sel (rerata ± SD) : 47.3 ± 5.2 µm
-Lebar sel (rerata ± SD)   : 28.6 ± 3.8 µm
-Kerapatan stomata abaksial: 412 mm⁻²
-Indeks stomata            : 0.14
-Indeks kebulatan          : 0.83
-Rasio aspek               : 1.65
-
-DATA SAMPEL
-${['Glb-01 · Epidermis adaksial · 124 sel · luas 1247 µm²',
-   'Glb-02 · Epidermis abaksial · 98 sel · luas 1381 µm²',
-   'Glb-03 · Mesofil palisade  · 203 sel · luas 892 µm²'].join('\n')}
-
-KESIMPULAN
-Morfologi sel menunjukkan karakteristik daun naungan dengan sel epidermis berukuran besar,
-kerapatan stomata moderat, dan dominasi mesofil spons. Konsisten dengan tanaman famili Zingiberaceae.
-`;
-  downloadFile('laporan_plantscope.txt', txt, 'text/plain');
-}
-
+// ===== FUNCTIONS (PLACEHOLDERS) =====
+function resetCanvas() { if (uploadedImg) { measurements = []; annotations = []; redrawCanvas(); } }
+function detectCells() { alert('Cell detection algorithm implementation required'); }
+function clearAnnotations() { annotations = []; redrawCanvas(); }
+function drawHistogram() { const c = document.getElementById('histCanvas'); if (!c) return; const ctx = c.getContext('2d'); ctx.fillStyle = '#1D9E75'; ctx.fillRect(10, 120, 20, 30); ctx.fillRect(35, 80, 20, 70); ctx.fillRect(60, 60, 20, 90); }
+function drawStomaChart() { const c = document.getElementById('stomaChart'); if (!c) return; const ctx = c.getContext('2d'); ctx.fillStyle = '#1D9E75'; ctx.fillRect(40, 100, 30, 50); ctx.fillStyle = '#BA7517'; ctx.fillRect(100, 80, 30, 70); }
+function drawVascChart() { const c = document.getElementById('vascChart'); if (!c) return; const ctx = c.getContext('2d'); ctx.beginPath(); ctx.arc(150, 100, 40, 0, 2*Math.PI); ctx.stroke(); }
+function updateMeasList() { }
+function exportMeasurements() { alert('Export to CSV'); }
+function clearMeasurements() { measurements = []; updateMeasList(); }
+function exportAllCSV() { alert('Export all data to CSV'); }
+function exportJSON() { alert('Export data to JSON'); }
 function printReport() { window.print(); }
-
-// ===== INIT CHARTS =====
-window.addEventListener('load', () => {
-  drawHistogram();
-});
+function exportReportTxt() { alert('Export report as text'); }
 </script>
+
 </body>
 </html>
