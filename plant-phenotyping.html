@@ -18,40 +18,41 @@
     Plant<span>Scope</span>
   </div>
   <div class="header-meta">
-    <span><span class="status-dot"></span>Sistem aktif</span>
+    <span><span class="status-dot"></span><span data-i18n="system-status">Sistem aktif</span></span>
     <span id="headerTime">—</span>
     <span>v1.0 · Agroteknologi</span>
+    <button class="lang-toggle" id="langToggle" onclick="toggleLang()">🌐 EN</button>
   </div>
 </header>
 
 <div class="app-body">
   <nav class="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-label">Analisis</div>
+      <div class="sidebar-label" data-i18n="section-analysis">Analisis</div>
       <div class="nav-item active" onclick="showPanel('upload',this)">
-        <span class="nav-icon">📤</span> Unggah Gambar
+        <span class="nav-icon">📤</span> <span data-i18n="nav-upload">Unggah Gambar</span>
       </div>
       <div class="nav-item" onclick="showPanel('morphology',this)">
-        <span class="nav-icon">📐</span> Morfologi Sel
+        <span class="nav-icon">📐</span> <span data-i18n="nav-morphology">Morfologi Sel</span>
       </div>
       <div class="nav-item" onclick="showPanel('stomata',this)">
-        <span class="nav-icon">🌿</span> Indeks Stomata
+        <span class="nav-icon">🌿</span> <span data-i18n="nav-stomata">Indeks Stomata</span>
       </div>
       <div class="nav-item" onclick="showPanel('vascular',this)">
-        <span class="nav-icon">🔗</span> Jaringan Pembuluh
+        <span class="nav-icon">🔗</span> <span data-i18n="nav-vascular">Jaringan Pembuluh</span>
       </div>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-label">Data</div>
+      <div class="sidebar-label" data-i18n="section-data">Data</div>
       <div class="nav-item" onclick="showPanel('data',this)">
-        <span class="nav-icon">🗄️</span> Rekap Data
+        <span class="nav-icon">🗄️</span> <span data-i18n="nav-data">Rekap Data</span>
       </div>
       <div class="nav-item" id="nav-report" onclick="showPanel('report',this)">
-        <span class="nav-icon">📄</span> Laporan
+        <span class="nav-icon">📄</span> <span data-i18n="nav-report">Laporan</span>
       </div>
     </div>
     <div class="sidebar-bottom">
-      <p>Dikembangkan untuk riset<br><strong>Biodiversitas & Ekologi Tanaman</strong></p>
+      <p><span data-i18n="sidebar-dev">Dikembangkan untuk riset</span><br><strong data-i18n="sidebar-field">Biodiversitas & Ekologi Tanaman</strong></p>
     </div>
   </nav>
 
@@ -59,14 +60,14 @@
 
     <!-- PANEL: UPLOAD -->
     <div id="panel-upload" class="panel active">
-      <div class="page-title">Unggah Gambar Mikroskop</div>
-      <div class="page-sub">Unggah gambar irisan daun atau jaringan untuk memulai analisis fenotipe</div>
+      <div class="page-title" data-i18n="upload-title">Unggah Gambar Mikroskop</div>
+      <div class="page-sub" data-i18n="upload-sub">Unggah gambar irisan daun atau jaringan untuk memulai analisis fenotipe</div>
 
       <label for="fileInput">
         <div class="upload-zone" id="dropZone">
           <span class="upload-icon">🔬</span>
-          <h3>Seret gambar ke sini atau klik untuk memilih</h3>
-          <p>Mendukung gambar mikroskop cahaya, fluoresen, dan SEM</p>
+          <h3 data-i18n="upload-drop-heading">Seret gambar ke sini atau klik untuk memilih</h3>
+          <p data-i18n="upload-drop-hint">Mendukung gambar mikroskop cahaya, fluoresen, dan SEM</p>
           <div class="formats">
             <span class="fmt-badge">TIFF</span>
             <span class="fmt-badge">PNG</span>
@@ -81,74 +82,74 @@
         <div class="grid-2">
           <div>
             <div class="card">
-              <div class="card-head"><span class="icon">🖼️</span>Pratinjau Gambar</div>
+              <div class="card-head"><span class="icon">🖼️</span><span data-i18n="card-preview">Pratinjau Gambar</span></div>
               <div class="calib-row">
-                <span class="calib-label">Kalibrasi:</span>
+                <span class="calib-label" data-i18n="calib-label">Kalibrasi:</span>
                 <input class="calib-input" type="number" id="pixPerUm" value="2.5" step="0.1" min="0.1">
-                <span class="calib-label">px/µm</span>
-                <button class="tool-btn" onclick="applyCalib()">✓ Terapkan</button>
+                <span class="calib-label" data-i18n="calib-unit">px/µm</span>
+                <button class="tool-btn" onclick="applyCalib()" data-i18n="calib-apply">✓ Terapkan</button>
               </div>
               <div class="tool-strip">
-                <button class="tool-btn active" id="toolZoom" onclick="setTool('zoom',this)">🔍 Zoom</button>
-                <button class="tool-btn" id="toolMeasure" onclick="setTool('measure',this)">📏 Ukur</button>
-                <button class="tool-btn" id="toolAnnotate" onclick="setTool('annotate',this)">✏️ Anotasi</button>
-                <button class="tool-btn" onclick="resetCanvas()">↺ Reset</button>
+                <button class="tool-btn active" id="toolZoom" onclick="setTool('zoom',this)" data-i18n="tool-zoom">🔍 Zoom</button>
+                <button class="tool-btn" id="toolMeasure" onclick="setTool('measure',this)" data-i18n="tool-measure">📏 Ukur</button>
+                <button class="tool-btn" id="toolAnnotate" onclick="setTool('annotate',this)" data-i18n="tool-annotate">✏️ Anotasi</button>
+                <button class="tool-btn" onclick="resetCanvas()" data-i18n="tool-reset">↺ Reset</button>
               </div>
               <div class="canvas-wrap" id="canvasWrap">
                 <canvas id="mainCanvas"></canvas>
               </div>
-              <p style="font-size:11px;color:var(--text3);margin-top:8px;">
-                💡 Aktifkan <strong style="color:var(--teal-light)">Ukur</strong> → klik & seret pada gambar untuk mengukur jarak
+              <p id="canvasTip" style="font-size:11px;color:var(--text3);margin-top:8px;">
+                💡 Aktifkan <strong style="color:var(--teal-light)">Ukur</strong> → klik &amp; seret pada gambar untuk mengukur jarak
               </p>
             </div>
           </div>
           <div>
             <div class="card">
-              <div class="card-head"><span class="icon">⚙️</span>Penyesuaian Gambar</div>
+              <div class="card-head"><span class="icon">⚙️</span><span data-i18n="card-adjust">Penyesuaian Gambar</span></div>
               <div class="slider-row">
-                <label><span>Kecerahan</span><span id="brightVal">50</span></label>
+                <label><span data-i18n="lbl-brightness">Kecerahan</span><span id="brightVal">50</span></label>
                 <input type="range" min="0" max="100" value="50" id="brightness" oninput="adjustImage()">
               </div>
               <div class="slider-row">
-                <label><span>Kontras</span><span id="contrastVal">50</span></label>
+                <label><span data-i18n="lbl-contrast">Kontras</span><span id="contrastVal">50</span></label>
                 <input type="range" min="0" max="100" value="50" id="contrast" oninput="adjustImage()">
               </div>
               <div class="slider-row">
-                <label><span>Saturasi</span><span id="satVal">50</span></label>
+                <label><span data-i18n="lbl-saturation">Saturasi</span><span id="satVal">50</span></label>
                 <input type="range" min="0" max="100" value="50" id="saturation" oninput="adjustImage()">
               </div>
               <div class="slider-row">
-                <label><span>Threshold biner</span><span id="thrVal">128</span></label>
+                <label><span data-i18n="lbl-threshold">Threshold biner</span><span id="thrVal">128</span></label>
                 <input type="range" min="0" max="255" value="128" id="threshold" oninput="adjustImage()">
               </div>
               <div class="action-row">
-                <button class="btn-primary" onclick="detectCells()">🔵 Deteksi Sel</button>
-                <button class="btn-sec" onclick="clearAnnotations()">🗑 Hapus Anotasi</button>
+                <button class="btn-primary" onclick="detectCells()" data-i18n="btn-detect">🔵 Deteksi Sel</button>
+                <button class="btn-sec" onclick="clearAnnotations()" data-i18n="btn-clear-ann">🗑 Hapus Anotasi</button>
               </div>
             </div>
             <div class="card" style="margin-top:1rem;">
-              <div class="card-head"><span class="icon">🧩</span>Segmentasi Jaringan</div>
+              <div class="card-head"><span class="icon">🧩</span><span data-i18n="card-seg">Segmentasi Jaringan</span></div>
               <div class="seg-item">
                 <div class="seg-dot" style="background:#1D9E75"></div>
-                <span class="seg-name">Sel epidermis</span>
+                <span class="seg-name" data-i18n="seg-epid">Sel epidermis</span>
                 <div class="seg-bar-wrap"><div class="seg-bar-fill" style="width:38%;background:#1D9E75"></div></div>
                 <span class="seg-pct">38%</span>
               </div>
               <div class="seg-item">
                 <div class="seg-dot" style="background:#639922"></div>
-                <span class="seg-name">Sel mesofil</span>
+                <span class="seg-name" data-i18n="seg-meso">Sel mesofil</span>
                 <div class="seg-bar-wrap"><div class="seg-bar-fill" style="width:44%;background:#639922"></div></div>
                 <span class="seg-pct">44%</span>
               </div>
               <div class="seg-item">
                 <div class="seg-dot" style="background:#BA7517"></div>
-                <span class="seg-name">Stomata</span>
+                <span class="seg-name" data-i18n="seg-stoma">Stomata</span>
                 <div class="seg-bar-wrap"><div class="seg-bar-fill" style="width:12%;background:#BA7517"></div></div>
                 <span class="seg-pct">12%</span>
               </div>
               <div class="seg-item">
                 <div class="seg-dot" style="background:#484f58"></div>
-                <span class="seg-name">Lainnya</span>
+                <span class="seg-name" data-i18n="seg-other">Lainnya</span>
                 <div class="seg-bar-wrap"><div class="seg-bar-fill" style="width:6%;background:#484f58"></div></div>
                 <span class="seg-pct">6%</span>
               </div>
@@ -161,8 +162,8 @@
 
     <!-- PANEL: MORPHOLOGY -->
     <div id="panel-morphology" class="panel">
-      <div class="page-title">Pengukuran Morfologi Sel</div>
-      <div class="page-sub">Parameter morfometri sel epidermis dan mesofil daun</div>
+      <div class="page-title" data-i18n="morph-title">Pengukuran Morfologi Sel</div>
+      <div class="page-sub" data-i18n="morph-sub">Parameter morfometri sel epidermis dan mesofil daun</div>
       <div class="grid-2">
         <div>
           <div class="card">
@@ -221,8 +222,8 @@
               </li>
             </ul>
             <div class="action-row">
-              <button class="btn-sec" onclick="exportMeasurements()">⬇ Ekspor CSV</button>
-              <button class="btn-sec" onclick="clearMeasurements()">🗑 Hapus Semua</button>
+              <button class="btn-sec" onclick="exportMeasurements()" data-i18n="btn-export-meas">⬇ Ekspor CSV</button>
+              <button class="btn-sec" onclick="clearMeasurements()" data-i18n="btn-clear-meas">🗑 Hapus Semua</button>
             </div>
           </div>
         </div>
@@ -231,8 +232,8 @@
 
     <!-- PANEL: STOMATA -->
     <div id="panel-stomata" class="panel">
-      <div class="page-title">Indeks & Morfologi Stomata</div>
-      <div class="page-sub">Analisis kerapatan, apertur, dan indeks stomata daun</div>
+      <div class="page-title" data-i18n="stoma-title">Indeks & Morfologi Stomata</div>
+      <div class="page-sub" data-i18n="stoma-sub">Analisis kerapatan, apertur, dan indeks stomata daun</div>
       <div class="grid-3">
         <div class="stat-card">
           <div class="stat-num">320<span>/mm²</span></div>
@@ -280,8 +281,8 @@
 
     <!-- PANEL: VASCULAR -->
     <div id="panel-vascular" class="panel">
-      <div class="page-title">Jaringan Pembuluh</div>
-      <div class="page-sub">Analisis xilem, floem, dan kerapatan venasi daun</div>
+      <div class="page-title" data-i18n="vasc-title">Jaringan Pembuluh</div>
+      <div class="page-sub" data-i18n="vasc-sub">Analisis xilem, floem, dan kerapatan venasi daun</div>
       <div class="grid-2">
         <div>
           <div class="card">
@@ -309,8 +310,8 @@
 
     <!-- PANEL: DATA -->
     <div id="panel-data" class="panel">
-      <div class="page-title">Rekap Data Pengukuran</div>
-      <div class="page-sub">Semua sesi pengukuran tersimpan dalam sesi ini</div>
+      <div class="page-title" data-i18n="data-title">Rekap Data Pengukuran</div>
+      <div class="page-sub" data-i18n="data-sub">Semua sesi pengukuran tersimpan dalam sesi ini</div>
       <div class="grid-4">
         <div class="stat-card"><div class="stat-num">12</div><div class="stat-lbl">Gambar dianalisis</div></div>
         <div class="stat-card"><div class="stat-num">847</div><div class="stat-lbl">Sel terdeteksi</div></div>
@@ -344,17 +345,17 @@
           </table>
         </div>
         <div class="action-row">
-          <button class="btn-primary" onclick="exportAllCSV()">⬇ Ekspor Semua (CSV)</button>
-          <button class="btn-sec" onclick="exportJSON()">⬇ Ekspor JSON</button>
-          <button class="btn-sec" onclick="showPanel('report', document.getElementById('nav-report'))">📄 Buat Laporan</button>
+          <button class="btn-primary" onclick="exportAllCSV()" data-i18n="btn-export-all-csv">⬇ Ekspor Semua (CSV)</button>
+          <button class="btn-sec" onclick="exportJSON()" data-i18n="btn-export-json">⬇ Ekspor JSON</button>
+          <button class="btn-sec" onclick="showPanel('report', document.getElementById('nav-report'))" data-i18n="btn-make-report">📄 Buat Laporan</button>
         </div>
       </div>
     </div>
 
     <!-- PANEL: REPORT -->
     <div id="panel-report" class="panel">
-      <div class="page-title">Laporan Analisis</div>
-      <div class="page-sub">Ringkasan otomatis hasil pengukuran fenotipe mikroskopi</div>
+      <div class="page-title" data-i18n="report-title">Laporan Analisis</div>
+      <div class="page-sub" data-i18n="report-sub">Ringkasan otomatis hasil pengukuran fenotipe mikroskopi</div>
       <div class="card">
         <div class="card-head"><span class="icon">📄</span>Pratinjau Laporan</div>
         <div style="background:var(--bg3);border-radius:var(--radius);padding:1.5rem;font-family:'Lora',serif;">
@@ -395,8 +396,8 @@
           </p>
         </div>
         <div class="action-row">
-          <button class="btn-primary" onclick="printReport()">🖨 Cetak Laporan</button>
-          <button class="btn-sec" onclick="exportReportTxt()">⬇ Ekspor Teks</button>
+          <button class="btn-primary" onclick="printReport()" data-i18n="btn-print">🖨 Cetak Laporan</button>
+          <button class="btn-sec" onclick="exportReportTxt()" data-i18n="btn-export-txt">⬇ Ekspor Teks</button>
         </div>
       </div>
     </div>
@@ -406,6 +407,6 @@
 
 <div class="tooltip" id="tooltip"></div>
 
-<script type="module" src="js/main.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

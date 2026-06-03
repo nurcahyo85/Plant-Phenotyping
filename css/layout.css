@@ -34,6 +34,23 @@
   display: flex; align-items: center; gap: var(--spacing-lg);
 }
 
+.lang-toggle {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  line-height: 1;
+}
+.lang-toggle:hover {
+  border-color: var(--teal2);
+  color: var(--teal-light);
+}
+
 .status-dot {
   width: 6px; height: 6px;
   border-radius: 50%; background: var(--teal);
