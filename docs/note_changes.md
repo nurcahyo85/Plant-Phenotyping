@@ -1,19 +1,16 @@
-# 📝 Change Notes 2 (2026-06-03): v0.11 — Fix tab navigation, add language toggle
+# 📝 Change Notes 3 (2026-06-03): Add test_images/ and output/ folders with naming conventions
 
-- Fixed tab/nav buttons being completely unresponsive: root cause was `<script type="module">` failing silently under the `file://` protocol (CORS blocks ES module imports), so `window.showPanel` and all other onclick handlers were never registered.
-- Consolidated all JS modules (`state.js`, `nav.js`, `canvas.js`, `charts.js`, `export.js`, `main.js`) into a single non-module `js/app.js`; the HTML now loads it with a plain `<script src>` that works with or without a local server.
-- Added language toggle button (`🌐 EN / ID`) to the app header; switches the full UI between Indonesian and English using `data-i18n` attributes on nav items, panel titles, subtitles, card headers, slider labels, and buttons.
-- Charts (histogram, stomata bar, vascular pie) re-render with translated axis labels on language switch.
-- Dynamic strings (cell detection feedback, measurement list, alert messages) also respect the active language.
-
----
-
-# 📝 Change Notes 1 (2026-06-03): Bootstrap project tooling — wrapup commands and .gitignore
-
-- Added `.claude/commands/wrapup-hard.md` — full session wrap-up command adapted from spppt-2: gathers git diff, updates `note_changes.md` + `note_codebase.md`, updates SKILL files, and generates a commit message. Scopes and SKILL file list adapted to this project (canvas, analytics, ui, state, export).
-- Added `.claude/commands/wrapup-soft.md` — lightweight wrap-up: SKILL file updates (if warranted), session summary, and commit message. Skips the heavy note-file updates.
-- Added `.gitignore` — ignores `.claude/` so local tooling config (commands, SKILL files, settings) stays out of version control.
+- Created `test_images/` folder to hold microscopy images used for manual and automated testing. Added `.gitkeep` so the empty folder is tracked by git.
+- Created `test_images/NAMING_CONVENTION.txt` — defines the naming format `{task}_{index}.{ext}` (zero-padded 3-digit index, restarts at 001 per task). Documents all six analysis tasks (`upload`, `detect`, `segment`, `morphology`, `stomata`, `vascular`) with the image characteristics needed for each (e.g. safranin/alcian-blue staining for vascular, paired guard-cell morphology for stomata). Maps tasks to their planned FastAPI endpoints from `note_plan.md`.
+- Created `test_images/.env` — registers concrete file paths via `TEST_IMG_{TASK}_{INDEX}=filename` variables so scripts and the backend can locate test assets without hardcoding paths.
+- Created `output/` folder (same structure) for generated analysis results. Added `.gitkeep`.
+- Created `output/NAMING_CONVENTION.txt` — defines the richer format `{task}_{index}_{type}.{ext}` where `type` is one of `overlay`, `mask`, `crop`, `chart`, `json`, `csv`, `report`. Lists the expected output files per task (e.g. `detect_001_overlay.png` + `detect_001_json.json`). Requires that index matches the source image in `test_images/` so results stay traceable to their input.
+- Created `output/.env` — registers output paths via `OUT_{TASK}_{INDEX}_{TYPE}=filename`.
+- Updated `.gitignore` — added glob patterns to exclude actual image and data files (`*.jpg`, `*.png`, `*.tif`, `*.json`, `*.csv`, `*.pdf`) inside both `test_images/` and `output/`, so only the convention docs and `.env` files are tracked. Raw images and generated results must not be committed.
+- Updated `README.md` — added a `📋 Change Notes →` blockquote link directly under the badge row; updated the Repository Structure section to remove stale entries (`bulletin.html`, `LICENSE`, placeholder `data/` and `algorithms/` folders), expand `docs/` with the three real files, list `app.js` as the consolidated JS entry point, and add the new `test_images/` and `output/` trees.
 
 Previous change notes: (latest first)
+* Change note 2: v0.11 — Fix tab navigation, add language toggle - [note_changes.md](https://github.com/pkhamchuai/Plant-Phenotyping/blob/a1000486cfd6586f8494748fc8d40ce2f10b5ad0/docs/note_changes.md)
+* Change note 1: Bootstrap project tooling — wrapup commands and .gitignore - [note_changes.md](https://github.com/pkhamchuai/Plant-Phenotyping/blob/a1000486cfd6586f8494748fc8d40ce2f10b5ad0/docs/note_changes.md)
 
 ---

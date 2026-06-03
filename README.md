@@ -11,6 +11,8 @@
 ![Static Badge](https://img.shields.io/badge/lisensi-MIT-green)
 ![Static Badge](https://img.shields.io/badge/kontribusi-terbuka-brightgreen)
 
+> 📋 **[Change Notes →](docs/note_changes.md)**
+
 ---
 
 ## 🌿 About This Project
@@ -128,10 +130,8 @@ If your research intersects with any of these topics, research collaboration dis
 plantscope/
 │
 ├── plant-phenotyping.html    # Main application entry point
-├── bulletin.html             # Project task board (bugs & features)
 ├── README.md                 # This file (English)
 ├── README_ID.md              # Documentation (Indonesian)
-├── LICENSE                   # MIT License
 │
 ├── css/
 │   ├── variables.css         # Design tokens (colors, spacing, typography)
@@ -140,16 +140,25 @@ plantscope/
 │   └── components.css        # Cards, buttons, canvas, table, badges
 │
 ├── js/
-│   ├── main.js               # Entry point — wires all modules
+│   ├── app.js                # Consolidated entry point (all modules)
 │   ├── state.js              # Shared application state
 │   ├── canvas.js             # Canvas tools, upload, measurements
 │   ├── charts.js             # Histogram, stomata, vascular charts
 │   ├── export.js             # CSV / JSON / text / print export
 │   └── nav.js                # Clock and time display
 │
-├── docs/                     # (coming soon) Technical documentation
-├── data/                     # (coming soon) Test and reference data
-└── algorithms/               # (coming soon) Segmentation algorithm modules
+├── docs/
+│   ├── note_changes.md       # Change log — see all version notes
+│   ├── note_plan.md          # Backend integration roadmap (FastAPI)
+│   └── note_codebase.md      # Architecture and code reference
+│
+├── test_images/
+│   ├── NAMING_CONVENTION.txt # Image naming rules per analysis task
+│   └── .env                  # Registered test image paths
+│
+└── output/
+    ├── NAMING_CONVENTION.txt # Output naming rules (overlay, mask, json, …)
+    └── .env                  # Registered output file paths
 ```
 
 ---

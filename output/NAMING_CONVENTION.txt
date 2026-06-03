@@ -1,0 +1,63 @@
+Output File Naming Convention
+==============================
+
+Format: {task}_{index}_{type}.{ext}
+
+  task   — same task names as in test_images/ (lowercase)
+  index  — matches the input image index (001, 002, ...)
+  type   — what the file contains (see Type Tags below)
+  ext    — png, jpg, json, csv, pdf
+
+Type Tags
+---------
+  overlay     Annotated image with detected cells / regions drawn on top
+  mask        Binary or colour-coded segmentation mask
+  crop        Cropped sub-region extracted during analysis
+  chart       Chart or histogram exported as an image
+  json        Raw API response (exact JSON returned by the backend)
+  csv         Tabular metrics exported for downstream use
+  report      Final PDF or HTML report
+
+Tasks and Expected Outputs
+--------------------------
+  upload
+    upload_001_overlay.png      Preview with brightness/contrast applied
+    upload_001_json.json        Basic file metadata (size, resolution)
+
+  detect      (POST /api/detect-cells)
+    detect_001_overlay.png      Ellipses drawn over detected cells
+    detect_001_mask.png         Binary cell mask
+    detect_001_json.json        Full API response { count, cells[], method }
+
+  segment     (POST /api/segment)
+    segment_001_mask.png        Colour-coded tissue mask (4 classes)
+    segment_001_json.json       Fraction per tissue type { epidermis, mesophyll, stomata, other }
+
+  morphology  (POST /api/morphology)
+    morphology_001_overlay.png  Cells labelled with IDs
+    morphology_001_chart.png    Cell size histogram (8 bins)
+    morphology_001_csv.csv      Per-cell metrics (area, perimeter, circularity, …)
+    morphology_001_json.json    Full API response
+
+  stomata     (POST /api/stomata)
+    stomata_001_overlay.png     Guard cells highlighted
+    stomata_001_chart.png       Adaxial / abaxial bar chart
+    stomata_001_json.json       { density_per_mm2, stomatal_index, guard_cell_length_um, … }
+
+  vascular    (POST /api/vascular)
+    vascular_001_overlay.png    Xylem (red) / phloem (blue) overlay
+    vascular_001_mask.png       Per-tissue binary masks
+    vascular_001_chart.png      Pie chart of tissue fractions
+    vascular_001_json.json      { vein_density, xylem_diameter_um, phloem_diameter_um, … }
+
+  report
+    report_001_report.pdf       Final exported report (all samples)
+
+Rules
+-----
+  - Index must match the source image in test_images/ (detect_001_overlay → detect_001.jpg).
+  - Keep raw JSON responses alongside overlays so results can be re-rendered without re-running.
+  - Subfolder per task is optional but recommended once files exceed ~20:
+      output/detect/
+      output/morphology/
+      …

@@ -47,12 +47,30 @@
 
 ## Section 4 — Config & tooling
 
-* **`.gitignore`** [NEW]
-    * **Purpose:** Excludes `.claude/` (local tooling — commands, SKILL files, settings) from version control.
+* **`.gitignore`**
+    * **Purpose:** Excludes `.claude/` (local tooling) and all image/data files inside `test_images/` and `output/` from version control; only convention docs and `.env` files in those folders are tracked.
 
 ## Section 5 — Documentation (`docs/`)
 
-* **`README.md`** — English README.
+* **`README.md`** — English README; includes badge row, changelog link, repo structure tree, roadmap, and contribution guide.
 * **`README_ID.md`** — Indonesian README.
 * **`docs/note_changes.md`** — Running change log, kept to one full entry + index.
 * **`docs/note_codebase.md`** — This file; documents purpose and usage of every source file.
+* **`docs/note_plan.md`** — FastAPI backend integration roadmap; specifies endpoints, JSON contracts, algorithms, and open bug/feature lists for all five analysis tasks.
+
+## Section 6 — Test assets (`test_images/`)
+
+* **`test_images/NAMING_CONVENTION.txt`** [NEW]
+    * **Purpose:** Defines the naming format `{task}_{index}.{ext}` for all test images; lists the six tasks (`upload`, `detect`, `segment`, `morphology`, `stomata`, `vascular`) with the image characteristics required for each and their corresponding FastAPI endpoints.
+    * **Notes:** Index restarts at 001 per task. PNG preferred for synthetic images; JPG for real microscopy photos.
+
+* **`test_images/.env`** [NEW]
+    * **Purpose:** Registers concrete test image paths via `TEST_IMG_{TASK}_{INDEX}=filename`; consumed by backend scripts and test runners to locate assets without hardcoding paths.
+
+## Section 7 — Generated outputs (`output/`)
+
+* **`output/NAMING_CONVENTION.txt`** [NEW]
+    * **Purpose:** Defines the naming format `{task}_{index}_{type}.{ext}` for all generated results; `type` is one of `overlay`, `mask`, `crop`, `chart`, `json`, `csv`, `report`. Lists the expected output files per task and requires that the index matches the source image in `test_images/`.
+
+* **`output/.env`** [NEW]
+    * **Purpose:** Registers generated output paths via `OUT_{TASK}_{INDEX}_{TYPE}=filename`; updated as new results are produced.

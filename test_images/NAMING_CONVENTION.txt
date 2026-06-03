@@ -1,0 +1,43 @@
+Test Image Naming Convention
+=============================
+
+Format: {task}_{index}.{ext}
+
+  task   — one of the panel names below (lowercase)
+  index  — zero-padded 3-digit number (001, 002, ...)
+  ext    — png or jpg
+
+Tasks
+-----
+  upload      General image upload / basic display tests (any plant cross-section)
+  detect      Cell detection — POST /api/detect-cells (Priority 1)
+              needs: images with clearly visible cell boundaries; stained sections preferred
+  segment     Tissue segmentation — POST /api/segment (Priority 2)
+              needs: colour-stained sections with distinct epidermis / mesophyll / stomata layers
+  morphology  Cell morphology metrics — POST /api/morphology (Priority 3)
+              needs: same images as `detect`; regionprops require well-separated cells
+  stomata     Stomata analysis — POST /api/stomata (Priority 4)
+              needs: abaxial / adaxial leaf surface images; small paired guard-cell structures
+  vascular    Vascular tissue analysis — POST /api/vascular (Priority 5)
+              needs: cross-sections with safranin/alcian-blue staining (red xylem, blue phloem)
+
+Examples
+--------
+  upload_001.jpg       Any plant section for upload-panel smoke tests
+  detect_001.jpg       Clear cell boundaries — used to test contour detection
+  detect_002.jpg       Touching/overlapping cells — edge case for YOLO Phase 2
+  segment_001.jpg      Colour-stained section with 4 distinct tissue types
+  morphology_001.jpg   Well-separated cells for regionprops (area, perimeter, SI)
+  morphology_002.jpg
+  stomata_001.jpg      Adaxial leaf surface with visible stomata
+  stomata_002.jpg      Abaxial surface — compare density/index values
+  vascular_001.jpg     Safranin/alcian-blue cross-section (xylem = red, phloem = blue)
+  vascular_002.jpg     Greyscale fallback — tests watershed pipeline
+
+Rules
+-----
+  - Use only lowercase letters and underscores in the task name.
+  - Start index at 001 per task (not a global sequence).
+  - Prefer PNG for synthetic / annotated images; JPG for real microscopy photos.
+  - Keep originals unmodified; place edited/annotated variants in a subfolder
+    named after the task (e.g. test_images/morphology/).

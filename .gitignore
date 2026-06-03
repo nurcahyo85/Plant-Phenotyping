@@ -1,1 +1,18 @@
 .claude/
+
+# Test images — ignore actual image files, keep the docs
+test_images/**/*.jpg
+test_images/**/*.jpeg
+test_images/**/*.png
+test_images/**/*.tif
+test_images/**/*.tiff
+
+# Output files — ignore generated results, keep the docs
+output/**/*.jpg
+output/**/*.jpeg
+output/**/*.png
+output/**/*.tif
+output/**/*.tiff
+output/**/*.json
+output/**/*.csv
+output/**/*.pdf
