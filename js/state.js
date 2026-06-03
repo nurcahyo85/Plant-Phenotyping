@@ -7,4 +7,9 @@ export const state = {
   measurements: [],
   annotations: [],
   pixPerUm: 2.5,
+
+  reset() {
+    this.measurements = [];
+    this.annotations = [];
+  },
 };
