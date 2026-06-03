@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="PlantScope: Advanced plant phenotyping microscopy analysis tool for cell morphology, stomata, and vascular tissue"
+    />
+    <meta name="theme-color" content="#0d1117" />
+
+    <title>Plant Phenotyping Microscopy — Analisis Sel Tanaman</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="logo">
+        <div class="logo-icon">🔬</div>
+        Plant<span>Scope</span>
+      </div>
+      <div class="header-meta">
+        <span><span class="status-dot" aria-hidden="true"></span>Sistem aktif</span>
+        <span id="headerTime" aria-live="polite">—</span>
+        <span>v1.0 · Agroteknologi</span>
+      </div>
+    </header>
+
+    <!-- MAIN APPLICATION BODY -->
+    <div class="app-body">
+      <!-- SIDEBAR NAVIGATION -->
+      <nav class="sidebar" role="navigation" aria-label="Main navigation">
+        <!-- Analysis Section -->
+        <div class="sidebar-section">
+          <div class="sidebar-label" id="nav-analysis-label">Analisis</div>
+          <div
+            class="nav-item active"
+            role="button"
+            tabindex="0"
+            onclick="showPanel('upload',this)"
+            onkeypress="event.key==='Enter' && showPanel('upload',this)"
+            aria-label="Unggah Gambar - Upload microscopy images"
+          >
+            <span class="nav-icon" aria-hidden="true">📤</span> Unggah Gambar
+          </div>
+          <div
+            class="nav-item"
+            role="button"
+            tabindex="0"
+            onclick="showPanel('morphology',this)"
+            onkeypress="event.key==='Enter' && showPanel('morphology',this)"
+            aria-label="Morfologi Sel - Cell morphology analysis"
+          >
+            <span class="nav-icon" aria-hidden="true">📐</span> Morfologi Sel
+          </div>
+          <div
+            class="nav-item"
+            role="button"
+            tabindex="0"
+            onclick="showPanel('stomata',this)"
+            onkeypress="event.key==='Enter' && showPanel('stomata',this)"
+            aria-label="Indeks Stomata - Stomatal index analysis"
+          >
+            <span class="nav-icon" aria-hidden="true">🌿</span> Indeks Stomata
+          </div>
+          <div
+            class="nav-item"
+            role="button"
+            tabindex="0"
+            onclick="showPanel('vascular',this)"
+            onkeypress="event.key==='Enter' && showPanel('vascular',this)"
+            aria-label="Jaringan Pembuluh - Vascular tissue analysis"
+          >
+            <span class="nav-icon" aria-hidden="true">🔗</span> Jaringan Pembuluh
+          </div>
+        </div>
+
+        <!-- Data Section -->
+        <div class="sidebar-section">
+          <div class="sidebar-label">Data</div>
+          <div
+            class="nav-item"
+            role="button"
+            tabindex="0"
+            onclick="showPanel('data',this)"
+            onkeypress="event.key==='Enter' && showPanel('data',this)"
+            aria-label="Rekap Data - Data summary"
+          >
+            <span class="nav-icon" aria-hidden="true">🗄️</span> Rekap Data
+          </div>
+          <div
+            class="nav-item"
+            role="button"
+            tabindex="0"
+            onclick="showPanel('report',this)"
+            onkeypress="event.key==='Enter' && showPanel('report',this)"
+            aria-label="Laporan - Analysis report"
+          >
+            <span class="nav-icon" aria-hidden="true">📄</span> Laporan
+          </div>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-bottom">
+          <p>
+            Dikembangkan untuk riset<br />
+            <strong>Biodiversitas & Ekologi Tanaman</strong>
+          </p>
+        </div>
+      </nav>
+
+      <!-- MAIN CONTENT AREA -->
+      <main class="main-content" role="main">
+        <!-- PANEL: UPLOAD -->
+        <div id="panel-upload" class="panel active">
+          <div class="page-title">Unggah Gambar Mikroskop</div>
+          <div class="page-sub">
+            Unggah gambar irisan daun atau jaringan untuk memulai analisis fenotipe
+          </div>
+
+          <label for="fileInput" class="sr-only">Upload image file</label>
+          <div class="upload-zone" id="dropZone" role="button" tabindex="0" aria-label="Drag and drop area for image upload">
+            <span class="upload-icon" aria-hidden="true">🔬</span>
+            <h3>Seret gambar ke sini atau klik untuk memilih</h3>
+            <p>Mendukung gambar mikroskop cahaya, fluoresen, dan SEM</p>
+            <div class="formats">
+              <span class="fmt-badge">TIFF</span>
+              <span class="fmt-badge">PNG</span>
+              <span class="fmt-badge">JPG</span>
+              <span class="fmt-badge">BMP</span>
+            </div>
+          </div>
+          <input
+            type="file"
+            id="fileInput"
+            accept="image/*"
+            aria-label="Image file input"
+            onchange="handleFile(event)"
+          />
+
+          <!-- IMAGE SECTION (Hidden by default) -->
+          <div id="imageSection" style="display: none; margin-top: 1.5rem">
+            <div class="grid-2">
+              <!-- Left Column: Canvas and Tools -->
+              <div>
+                <div class="card">
+                  <div class="card-head">
+                    <span class="icon" aria-hidden="true">🖼️</span>Pratinjau Gambar
+                  </div>
+
+                  <!-- Calibration Section -->
+                  <div class="calib-row">
+                    <label class="calib-label" for="pixPerUm">Kalibrasi:</label>
+                    <input
+                      class="calib-input"
+                      type="number"
+                      id="pixPerUm"
+                      value="2.5"
+                      step="0.1"
+                      min="0.1"
+                      aria-label="Calibration value in pixels per micrometer"
+                    />
+                    <span class="calib-label">px/µm</span>
+                    <button class="tool-btn" onclick="applyCalib()" aria-label="Apply calibration">
+                      ✓ Terapkan
+                    </button>
+                  </div>
+
+                  <!-- Tool Strip -->
+                  <div class="tool-strip" role="group" aria-label="Drawing tools">
+                    <button
+                      class="tool-btn active"
+                      id="toolZoom"
+                      onclick="setTool('zoom',this)"
+                      aria-label="Zoom tool"
+                      aria-pressed="true"
+                    >
+                      🔍 Zoom
+                    </button>
+                    <button
+                      class="tool-btn"
+                      id="toolMeasure"
+                      onclick="setTool('measure',this)"
+                      aria-label="Measurement tool"
+                      aria-pressed="false"
+                    >
+                      📏 Ukur
+                    </button>
+                    <button
+                      class="tool-btn"
+                      id="toolAnnotate"
+                      onclick="setTool('annotate',this)"
+                      aria-label="Annotation tool"
+                      aria-pressed="false"
+                    >
+                      ✏️ Anotasi
+                    </button>
+                    <button class="tool-btn" onclick="resetCanvas()" aria-label="Reset canvas">
+                      ↺ Reset
+                    </button>
+                  </div>
+
+                  <!-- Canvas -->
+                  <div class="canvas-wrap" id="canvasWrap">
+                    <canvas id="mainCanvas" aria-label="Image canvas for drawing and measurement"></canvas>
+                  </div>
+
+                  <p style="font-size: 11px; color: var(--text3); margin-top: 8px">
+                    💡 Aktifkan <strong style="color: var(--teal-light)">Ukur</strong> → klik
+                    & seret pada gambar untuk mengukur jarak
+                  </p>
+                </div>
+              </div>
+
+              <!-- Right Column: Image Adjustment and Segmentation -->
+              <div>
+                <!-- Image Adjustment Card -->
+                <div class="card">
+                  <div class="card-head">
+                    <span class="icon" aria-hidden="true">⚙️</span>Penyesuaian Gambar
+                  </div>
+
+                  <div class="slider-row">
+                    <label for="brightness">
+                      <span>Kecerahan</span><span id="brightVal" aria-live="polite">50</span>
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value="50"
+                      id="brightness"
+                      aria-label="Brightness adjustment"
+                    />
+                  </div>
+
+                  <div class="slider-row">
+                    <label for="contrast">
+                      <span>Kontras</span><span id="contrastVal" aria-live="polite">50</span>
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value="50"
+                      id="contrast"
+                      aria-label="Contrast adjustment"
+                    />
+                  </div>
+
+                  <div class="slider-row">
+                    <label for="saturation">
+                      <span>Saturasi</span><span id="satVal" aria-live="polite">50</span>
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value="50"
+                      id="saturation"
+                      aria-label="Saturation adjustment"
+                    />
+                  </div>
+
+                  <div class="slider-row">
+                    <label for="threshold">
+                      <span>Threshold biner</span><span id="thrVal" aria-live="polite">128</span>
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="255"
+                      value="128"
+                      id="threshold"
+                      aria-label="Binary threshold adjustment"
+                    />
+                  </div>
+
+                  <div class="action-row">
+                    <button class="btn-primary" onclick="detectCells()" aria-label="Detect cells in image">
+                      🔵 Deteksi Sel
+                    </button>
+                    <button class="btn-sec" onclick="clearAnnotations()" aria-label="Clear all annotations">
+                      🗑 Hapus Anotasi
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Segmentation Card -->
+                <div class="card" style="margin-top: 1rem">
+                  <div class="card-head">
+                    <span class="icon" aria-hidden="true">🧩</span>Segmentasi Jaringan
+                  </div>
+
+                  <div class="seg-item">
+                    <div class="seg-dot" style="background: #1d9e75" aria-hidden="true"></div>
+                    <span class="seg-name">Sel epidermis</span>
+                    <div class="seg-bar-wrap">
+                      <div class="seg-bar-fill" style="width: 38%; background: #1d9e75"></div>
+                    </div>
+                    <span class="seg-pct">38%</span>
+                  </div>
+
+                  <div class="seg-item">
+                    <div class="seg-dot" style="background: #639922" aria-hidden="true"></div>
+                    <span class="seg-name">Sel mesofil</span>
+                    <div class="seg-bar-wrap">
+                      <div class="seg-bar-fill" style="width: 44%; background: #639922"></div>
+                    </div>
+                    <span class="seg-pct">44%</span>
+                  </div>
+
+                  <div class="seg-item">
+                    <div class="seg-dot" style="background: #ba7517" aria-hidden="true"></div>
+                    <span class="seg-name">Stomata</span>
+                    <div class="seg-bar-wrap">
+                      <div class="seg-bar-fill" style="width: 12%; background: #ba7517"></div>
+                    </div>
+                    <span class="seg-pct">12%</span>
+                  </div>
+
+                  <div class="seg-item">
+                    <div class="seg-dot" style="background: #484f58" aria-hidden="true"></div>
+                    <span class="seg-name">Lainnya</span>
+                    <div class="seg-bar-wrap">
+                      <div class="seg-bar-fill" style="width: 6%; background: #484f58"></div>
+                    </div>
+                    <span class="seg-pct">6%</span>
+                  </div>
+
+                  <div id="detectedInfo" style="margin-top: 10px; font-size: 11px; color: var(--text3); display: none"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL: MORPHOLOGY -->
+        <div id="panel-morphology" class="panel">
+          <div class="page-title">Pengukuran Morfologi Sel</div>
+          <div class="page-sub">Parameter morfometri sel epidermis dan mesofil daun</div>
+          <div class="grid-2">
+            <div>
+              <div class="card">
+                <div class="card-head">
+                  <span class="icon" aria-hidden="true">📐</span>Parameter Dasar Sel
+                </div>
+                <ul class="metric-list">
+                  <li>
+                    <span class="metric-label">Panjang sel rata-rata</span
+                    ><span class="metric-value">47.3<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Lebar sel rata-rata</span
+                    ><span class="metric-value">28.6<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Luas sel rata-rata</span
+                    ><span class="metric-value">1.247<span class="metric-unit">µm²</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Keliling rata-rata</span
+                    ><span class="metric-value">152.4<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Indeks kebulatan (SI)</span
+                    ><span class="metric-value"
+                      >0.83 <span class="badge badge-teal">Bulat</span></span
+                    >
+                  </li>
+                  <li>
+                    <span class="metric-label">Rasio aspek</span
+                    ><span class="metric-value">1.65</span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Faktor bentuk</span
+                    ><span class="metric-value">0.71</span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Kompaktitas</span
+                    ><span class="metric-value">1.19</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card" style="margin-top: 1rem">
+                <div class="card-head">
+                  <span class="icon" aria-hidden="true">📊</span>Distribusi Ukuran (n=124 sel)
+                </div>
+                <canvas id="histCanvas" width="340" height="160" aria-label="Cell size distribution histogram"></canvas>
+              </div>
+            </div>
+            <div>
+              <div class="card">
+                <div class="card-head">
+                  <span class="icon" aria-hidden="true">🧬</span>Analisis Populasi Sel
+                </div>
+                <div class="ring-grid">
+                  <div class="ring-item">
+                    <svg width="70" height="70" viewBox="0 0 70 70" aria-label="Normal cells: 83%">
+                      <circle cx="35" cy="35" r="28" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6" />
+                      <circle cx="35" cy="35" r="28" fill="none" stroke="#1D9E75" stroke-width="6"
+                        stroke-dasharray="175.93" stroke-dashoffset="30" stroke-linecap="round" transform="rotate(-90 35 35)" />
+                      <text x="35" y="39" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#e6edf3">
+                        83%
+                      </text>
+                    </svg>
+                    <div class="ring-label">Sel normal</div>
+                  </div>
+                  <div class="ring-item">
+                    <svg width="70" height="70" viewBox="0 0 70 70" aria-label="High elongation: 20%">
+                      <circle cx="35" cy="35" r="28" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6" />
+                      <circle cx="35" cy="35" r="28" fill="none" stroke="#BA7517" stroke-width="6"
+                        stroke-dasharray="175.93" stroke-dashoffset="140" stroke-linecap="round" transform="rotate(-90 35 35)" />
+                      <text x="35" y="39" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#e6edf3">
+                        20%
+                      </text>
+                    </svg>
+                    <div class="ring-label">Elongasi tinggi</div>
+                  </div>
+                  <div class="ring-item">
+                    <svg width="70" height="70" viewBox="0 0 70 70" aria-label="Binucleate: 10%">
+                      <circle cx="35" cy="35" r="28" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6" />
+                      <circle cx="35" cy="35" r="28" fill="none" stroke="#639922" stroke-width="6"
+                        stroke-dasharray="175.93" stroke-dashoffset="158" stroke-linecap="round" transform="rotate(-90 35 35)" />
+                      <text x="35" y="39" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#e6edf3">
+                        10%
+                      </text>
+                    </svg>
+                    <div class="ring-label">Binukleat</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card" style="margin-top: 1rem">
+                <div class="card-head">
+                  <span class="icon" aria-hidden="true">📏</span>Statistik Pengukuran Tangan
+                </div>
+                <ul class="metric-list" id="manualMeasList">
+                  <li style="color: var(--text3); font-size: 12px; justify-content: center">
+                    Belum ada pengukuran manual. Aktifkan alat Ukur di panel Unggah.
+                  </li>
+                </ul>
+                <div class="action-row">
+                  <button class="btn-sec" onclick="exportMeasurements()" aria-label="Export measurements as CSV">
+                    ⬇ Ekspor CSV
+                  </button>
+                  <button class="btn-sec" onclick="clearMeasurements()" aria-label="Clear all measurements">
+                    🗑 Hapus Semua
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL: STOMATA -->
+        <div id="panel-stomata" class="panel">
+          <div class="page-title">Indeks & Morfologi Stomata</div>
+          <div class="page-sub">Analisis kerapatan, apertur, dan indeks stomata daun</div>
+          <div class="grid-3">
+            <div class="stat-card">
+              <div class="stat-num">320<span>/mm²</span></div>
+              <div class="stat-lbl">Kerapatan stomata</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">0.14</div>
+              <div class="stat-lbl">Indeks stomata</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">18.5<span>µm</span></div>
+              <div class="stat-lbl">Panjang sel penjaga</div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <div class="card">
+                <div class="card-head">
+                  <span class="icon" aria-hidden="true">🌿</span>Parameter Stomata
+                </div>
+                <ul class="metric-list">
+                  <li>
+                    <span class="metric-label">Panjang sel penjaga</span
+                    ><span class="metric-value">18.5<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Lebar sel penjaga</span
+                    ><span class="metric-value">9.2<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Lebar apertur pori</span
+                    ><span class="metric-value">3.2<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Panjang apertur pori</span
+                    ><span class="metric-value">14.1<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Luas sel penjaga</span
+                    ><span class="metric-value">126.8<span class="metric-unit">µm²</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Kerapatan adaksial</span
+                    ><span class="metric-value">180<span class="metric-unit">mm⁻²</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Kerapatan abaksial</span
+                    ><span class="metric-value">412<span class="metric-unit">mm⁻²</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Rasio ad/abaksial</span
+                    ><span class="metric-value"
+                      >0.44 <span class="badge badge-teal">Amphistomatous</span></span
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="card">
+                <div class="card-head">
+                  <span class="icon" aria-hidden="true">📈</span>Perbandingan Permukaan
+                </div>
+                <canvas id="stomaChart" width="300" height="200" aria-label="Stomatal comparison chart"></canvas>
+              </div>
+              <div class="card" style="margin-top: 1rem">
+                <div class="card-head">
+                  <span class="icon" aria-hidden="true">💡</span>Interpretasi
+                </div>
+                <p style="font-size: 12px; color: var(--text2); line-height: 1.7">
+                  Indeks stomata <strong style="color: var(--teal-light)">0.14</strong> menunjukkan
+                  proporsi stomata terhadap total sel epidermis dalam rentang normal untuk tanaman
+                  dikotil tropis (0.10–0.20).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL: VASCULAR -->
+        <div id="panel-vascular" class="panel">
+          <div class="page-title">Jaringan Pembuluh</div>
+          <div class="page-sub">Analisis xilem, floem, dan kerapatan venasi daun</div>
+          <div class="grid-2">
+            <div>
+              <div class="card">
+                <div class="card-head">
+                  <span class="icon" aria-hidden="true">🔗</span>Parameter Pembuluh
+                </div>
+                <ul class="metric-list">
+                  <li>
+                    <span class="metric-label">Kerapatan vena (VD)</span
+                    ><span class="metric-value">8.4<span class="metric-unit">mm/mm²</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Diameter xilem</span
+                    ><span class="metric-value">12.7<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Diameter floem</span
+                    ><span class="metric-value">8.3<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Tebal dinding xilem</span
+                    ><span class="metric-value">2.1<span class="metric-unit">µm</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Luas berkas pembuluh</span
+                    ><span class="metric-value">348<span class="metric-unit">µm²</span></span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Indeks area pembuluh</span
+                    ><span class="metric-value">0.21</span>
+                  </li>
+                  <li>
+                    <span class="metric-label">Rasio xilem/floem</span
+                    ><span class="metric-value"
+                      >1.53 <span class="badge badge-amber">Tinggi</span></span
+                    >
+                  </li>
+                  <li>
+                    <span class="metric-label">Jumlah berkas/irisan</span
+                    ><span class="metric-value">7<span class="metric-unit">berkas</span></span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="card">
+                <div class="card-head">
+                  <span class="icon" aria-hidden="true">📊</span>Profil Pembuluh
+                </div>
+                <canvas id="vascChart" width="300" height="220" aria-label="Vascular tissue profile chart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL: DATA -->
+        <div id="panel-data" class="panel">
+          <div class="page-title">Rekap Data Pengukuran</div>
+          <div class="page-sub">Semua sesi pengukuran tersimpan dalam sesi ini</div>
+          <div class="grid-4">
+            <div class="stat-card">
+              <div class="stat-num">12</div>
+              <div class="stat-lbl">Gambar dianalisis</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">847</div>
+              <div class="stat-lbl">Sel terdeteksi</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">94<span>%</span></div>
+              <div class="stat-lbl">Akurasi segmentasi</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">3</div>
+              <div class="stat-lbl">Spesimen berbeda</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="icon" aria-hidden="true">🗄️</span>Tabel Data Sampel
+            </div>
+            <div class="tbl-wrap">
+              <table class="data-tbl">
+                <thead>
+                  <tr>
+                    <th>Kode Sampel</th>
+                    <th>Jenis Jaringan</th>
+                    <th>Jml Sel</th>
+                    <th>Rerata Luas (µm²)</th>
+                    <th>Rerata Panjang (µm)</th>
+                    <th>Kerapatan Stomata</th>
+                    <th>Indeks SI</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="name-col">Glb-01</td>
+                    <td>Epidermis adaksial</td>
+                    <td>124</td>
+                    <td>1247</td>
+                    <td>47.3</td>
+                    <td>320 mm⁻²</td>
+                    <td>0.83</td>
+                    <td><span class="badge badge-teal">Selesai</span></td>
+                  </tr>
+                  <tr>
+                    <td class="name-col">Glb-02</td>
+                    <td>Epidermis abaksial</td>
+                    <td>98</td>
+                    <td>1381</td>
+                    <td>52.1</td>
+                    <td>412 mm⁻²</td>
+                    <td>0.79</td>
+                    <td><span class="badge badge-teal">Selesai</span></td>
+                  </tr>
+                  <tr>
+                    <td class="name-col">Glb-03</td>
+                    <td>Mesofil palisade</td>
+                    <td>203</td>
+                    <td>892</td>
+                    <td>61.4</td>
+                    <td>—</td>
+                    <td>0.62</td>
+                    <td><span class="badge badge-teal">Selesai</span></td>
+                  </tr>
+                  <tr>
+                    <td class="name-col">Glb-04</td>
+                    <td>Xilem batang</td>
+                    <td>67</td>
+                    <td>548</td>
+                    <td>28.7</td>
+                    <td>—</td>
+                    <td>0.74</td>
+                    <td><span class="badge badge-amber">Proses</span></td>
+                  </tr>
+                  <tr>
+                    <td class="name-col">Glb-05</td>
+                    <td>Epidermis adaksial</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td><span class="badge badge-gray">Antre</span></td>
+                  </tr>
+                  <tr>
+                    <td class="name-col">Glb-06</td>
+                    <td>Mesofil spons</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td><span class="badge badge-gray">Antre</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="action-row">
+              <button class="btn-primary" onclick="exportAllCSV()" aria-label="Export all data as CSV">
+                ⬇ Ekspor Semua (CSV)
+              </button>
+              <button class="btn-sec" onclick="exportJSON()" aria-label="Export data as JSON">⬇ Ekspor JSON</button>
+              <button
+                class="btn-sec"
+                onclick="showPanel('report', document.querySelector('.nav-item:nth-child(7)'))"
+                aria-label="Generate report"
+              >
+                📄 Buat Laporan
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL: REPORT -->
+        <div id="panel-report" class="panel">
+          <div class="page-title">Laporan Analisis</div>
+          <div class="page-sub">Ringkasan otomatis hasil pengukuran fenotipe mikroskopi</div>
+          <div class="card">
+            <div class="card-head">
+              <span class="icon" aria-hidden="true">📄</span>Pratinjau Laporan
+            </div>
+            <div style="background: var(--bg3); border-radius: var(--radius); padding: 1.5rem; font-family: 'Lora', serif">
+              <p
+                style="font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 1rem"
+              >
+                LAPORAN ANALISIS FENOTIPE MIKROSKOPI · PlantScope v1.0
+              </p>
+              <h2 style="font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 4px">
+                Analisis Morfologi Sel Tanaman — Sesi Aktif
+              </h2>
+              <p style="font-size: 12px; color: var(--text2); margin-bottom: 1.5rem" id="reportDate">Tanggal: —</p>
+              <hr style="border: none; border-top: 1px solid var(--border); margin-bottom: 1.5rem" />
+              <h3 style="font-size: 14px; font-weight: 600; color: var(--teal-light); margin-bottom: 8px">
+                1. Ringkasan Eksekutif
+              </h3>
+              <p style="font-size: 13px; color: var(--text2); line-height: 1.8; margin-bottom: 1rem">
+                Analisis morfometri dilakukan terhadap 12 gambar mikroskop dari 3 spesimen berbeda.
+                Total 847 sel berhasil dideteksi dan diukur dengan akurasi segmentasi 94%. Sel
+                epidermis adaksial menunjukkan karakteristik daun naungan dengan ukuran sel
+                cenderung besar.
+              </p>
+              <h3 style="font-size: 14px; font-weight: 600; color: var(--teal-light); margin-bottom: 8px">
+                2. Parameter Morfologi Utama
+              </h3>
+              <table
+                style="width: 100%; border-collapse: collapse; font-size: 12px; font-family: 'DM Mono', monospace; margin-bottom: 1rem"
+              >
+                <tr style="border-bottom: 1px solid var(--border)">
+                  <td style="padding: 6px 0; color: var(--text2)">Panjang sel (rerata ± SD)</td>
+                  <td style="padding: 6px 0; color: var(--text); text-align: right">47.3 ± 5.2 µm</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border)">
+                  <td style="padding: 6px 0; color: var(--text2)">Lebar sel (rerata ± SD)</td>
+                  <td style="padding: 6px 0; color: var(--text); text-align: right">28.6 ± 3.8 µm</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border)">
+                  <td style="padding: 6px 0; color: var(--text2)">Kerapatan stomata abaksial</td>
+                  <td style="padding: 6px 0; color: var(--text); text-align: right">412 mm⁻²</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; color: var(--text2)">Indeks stomata</td>
+                  <td style="padding: 6px 0; color: var(--text); text-align: right">0.14</td>
+                </tr>
+              </table>
+              <h3 style="font-size: 14px; font-weight: 600; color: var(--teal-light); margin-bottom: 8px">
+                3. Kesimpulan
+              </h3>
+              <p style="font-size: 13px; color: var(--text2); line-height: 1.8">
+                Morfologi sel menunjukkan karakteristik daun naungan dengan sel epidermis berukuran
+                besar, kerapatan stomata moderat, dan dominasi mesofil spons. Indeks stomata 0.14
+                konsisten dengan nilai referensi tanaman dikotil tropis.
+              </p>
+            </div>
+            <div class="action-row">
+              <button class="btn-primary" onclick="printReport()" aria-label="Print this report">
+                🖨 Cetak Laporan
+              </button>
+              <button class="btn-sec" onclick="exportReportTxt()" aria-label="Export report as text file">
+                ⬇ Ekspor Teks
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- TOOLTIP -->
+    <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true"></div>
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="js/app.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/analytics.js"></script>
+  </body>
+</html>
