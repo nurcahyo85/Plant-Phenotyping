@@ -1,7 +1,7 @@
 # 🔬 PlantScope v1.0
 ### *Browser-based Plant Cell Phenotyping via Microscopy*
 
-> Aplikasi web ringan untuk analisis morfologi sel tanaman langsung dari gambar mikroskop — tanpa instalasi, tanpa server, cukup buka di browser.
+> A lightweight web application for plant cell morphology analysis directly from microscope images — no installation, no server, just open in your browser.
 
 <br>
 
@@ -13,147 +13,163 @@
 
 ---
 
-## 🌿 Tentang Proyek Ini
+## 🌿 About This Project
 
-PlantScope lahir dari kebutuhan nyata di lapangan: peneliti ekologi dan agroteknologi yang bekerja dengan gambar mikroskop daun seringkali tidak memiliki akses ke perangkat lunak analisis sel berbayar seperti ImageJ plugin tertentu, CellProfiler, atau NIS-Elements di komputer lapangan mereka.
+PlantScope was born from a real field need: ecology and agrotechnology researchers working with leaf microscope images often lack access to paid cell analysis software — such as specific ImageJ plugins, CellProfiler, or NIS-Elements — on their field computers.
 
-**PlantScope menawarkan alternatif yang sepenuhnya berjalan di browser** — cukup buka file HTML, unggah gambar mikroskop, dan mulai mengukur. Tidak ada instalasi. Tidak ada dependensi. Tidak ada biaya lisensi.
+**PlantScope offers an alternative that runs entirely in the browser** — just open the HTML file, upload a microscope image, and start measuring. No installation. No dependencies. No license fees.
 
-Proyek ini dikembangkan dengan konteks riset biodiversitas tropis, khususnya untuk tanaman dari famili **Zingiberaceae** (*Globba*, *Zingiber*, *Alpinia*), namun dirancang agar dapat digunakan untuk jaringan daun tanaman apapun.
+This project was developed in the context of tropical biodiversity research, specifically for plants from the **Zingiberaceae** family (*Globba*, *Zingiber*, *Alpinia*), but is designed to work with leaf tissue from any plant.
 
 ---
 
-## ✨ Fitur Saat Ini (v1.0)
+## ✨ Current Features (v1.0)
 
-| Modul | Fitur |
+| Module | Features |
 |---|---|
-| **Unggah Gambar** | Drag & drop, pratinjau, penyesuaian kecerahan/kontras/saturasi |
-| **Alat Ukur** | Pengukuran jarak interaktif dengan kalibrasi px/µm |
-| **Deteksi Sel** | Anotasi sel semi-otomatis pada gambar |
-| **Morfologi Sel** | Panjang, lebar, luas, keliling, indeks kebulatan, rasio aspek |
-| **Stomata** | Kerapatan, indeks stomata, ukuran sel penjaga, apertur pori |
-| **Jaringan Pembuluh** | Diameter xilem/floem, kerapatan vena, indeks area pembuluh |
-| **Segmentasi** | Klasifikasi epidermis, mesofil, stomata, dan jaringan lain |
-| **Ekspor Data** | CSV, JSON, dan laporan teks siap cetak |
+| **Image Upload** | Drag & drop, preview, brightness/contrast/saturation adjustment |
+| **Measurement Tools** | Interactive distance measurement with px/µm calibration |
+| **Cell Detection** | Semi-automatic cell annotation on images |
+| **Cell Morphology** | Length, width, area, perimeter, circularity index, aspect ratio |
+| **Stomata** | Density, stomatal index, guard cell size, pore aperture |
+| **Vascular Tissue** | Xylem/phloem diameter, vein density, vascular area index |
+| **Segmentation** | Classification of epidermis, mesophyll, stomata, and other tissues |
+| **Data Export** | CSV, JSON, and print-ready text reports |
 
 ---
 
-## 🚀 Cara Menggunakan
+## 🚀 How to Use
 
 ```
-1. Unduh file plant-phenotyping.html
-2. Buka di browser (Chrome / Firefox / Edge)
-3. Unggah gambar mikroskop
-4. Atur kalibrasi px/µm sesuai objektif yang digunakan
-5. Mulai analisis
+1. Download the plant-phenotyping.html file
+2. Open it in a browser (Chrome / Firefox / Edge)
+3. Upload a microscope image
+4. Set the px/µm calibration according to the objective lens used
+5. Start analysis
 ```
 
-Tidak ada langkah tambahan. Semua berjalan lokal di komputer Anda.
+No additional steps. Everything runs locally on your computer.
 
 ---
 
-## 🗺️ Peta Jalan Pengembangan
+## 🗺️ Development Roadmap
 
-Ini adalah area yang **sangat terbuka untuk kolaborasi**. Berikut daftar fitur yang ingin dikembangkan bersama:
+This is an area that is **highly open for collaboration**. Below is a list of features planned for future development:
 
-### 🔴 Prioritas Tinggi
-- [ ] **Segmentasi sel berbasis algoritma nyata** — integrasi OpenCV.js (Otsu thresholding, watershed, active contours) untuk menggantikan deteksi acak saat ini
-- [ ] **Kalkulasi parameter morfometri dari segmentasi aktual** — panjang, lebar, luas dihitung langsung dari piksel terseleksi
-- [ ] **Kalibrasi skala otomatis** — deteksi scale bar dari gambar
+### 🔴 High Priority
+- [ ] **Real algorithm-based cell segmentation** — integration of OpenCV.js (Otsu thresholding, watershed, active contours) to replace the current placeholder detection
+- [ ] **Morphometric parameter calculation from actual segmentation** — length, width, and area computed directly from selected pixels
+- [ ] **Automatic scale calibration** — scale bar detection from the image
 
-### 🟡 Prioritas Menengah
-- [ ] **Analisis warna sel** — identifikasi distribusi kloroplas berbasis intensitas hijau
-- [ ] **Mode perbandingan dua gambar** — overlay dua spesimen atau dua kondisi perlakuan
-- [ ] **Ekspor gambar teranotasi** — simpan canvas dengan pengukuran sebagai PNG/TIFF
-- [ ] **Dukungan multi-frame** — navigasi z-stack mikroskop confocal
+### 🟡 Medium Priority
+- [ ] **Cell color analysis** — chloroplast distribution identification based on green intensity
+- [ ] **Two-image comparison mode** — overlay two specimens or two treatment conditions
+- [ ] **Annotated image export** — save the canvas with measurements as PNG/TIFF
+- [ ] **Multi-frame support** — z-stack navigation for confocal microscopy
 
-### 🟢 Jangka Panjang
-- [ ] **Integrasi model deep learning (ONNX.js)** — klasifikasi jenis sel otomatis
-- [ ] **Database referensi morfometri** — nilai acuan untuk spesies tanaman umum
-- [ ] **Mode kolaboratif** — anotasi bersama via shared session
-- [ ] **Versi PWA** — bisa diinstal di tablet lapangan tanpa koneksi internet
+### 🟢 Long Term
+- [ ] **Deep learning model integration (ONNX.js)** — automatic cell type classification
+- [ ] **Morphometric reference database** — reference values for common plant species
+- [ ] **Collaborative mode** — shared annotation via shared session
+- [ ] **PWA version** — installable on field tablets without an internet connection
 
 ---
 
-## 🤝 Mari Berkolaborasi
+## 🤝 Let's Collaborate
 
-Proyek ini **sepenuhnya terbuka** untuk kontribusi dari siapapun — mahasiswa, peneliti, developer, atau siapapun yang tertarik pada persimpangan antara biologi tanaman dan teknologi.
+This project is **fully open** for contributions from anyone — students, researchers, developers, or anyone interested in the intersection of plant biology and technology.
 
-### Anda bisa berkontribusi dalam bentuk:
+### Ways you can contribute:
 
-- 🐛 **Melaporkan bug** — buka Issue jika menemukan perilaku yang tidak sesuai
-- 💡 **Mengusulkan fitur** — diskusi terbuka di tab Discussions
-- 🔧 **Menulis kode** — lihat daftar [open issues](../../issues) dan pilih yang menarik
-- 🧪 **Menguji dengan data nyata** — feedback dari penggunaan di lab sangat berharga
-- 📖 **Dokumentasi** — bantu menulis wiki atau panduan penggunaan dalam bahasa lain
-- 🌍 **Terjemahan UI** — saat ini tersedia dalam Bahasa Indonesia, terbuka untuk Inggris, dll.
+- 🐛 **Report bugs** — open an Issue if you encounter unexpected behavior
+- 💡 **Propose features** — open discussion in the Discussions tab
+- 🔧 **Write code** — browse the [open issues](../../issues) and pick one that interests you
+- 🧪 **Test with real data** — feedback from actual lab usage is invaluable
+- 📖 **Documentation** — help write wiki pages or user guides in other languages
+- 🌍 **UI Translation** — currently available in Indonesian, open for English and others
 
-### Cara mulai berkontribusi:
+### How to start contributing:
 
 ```bash
-# 1. Fork repositori ini
-# 2. Clone ke lokal Anda
+# 1. Fork this repository
+# 2. Clone it locally
 git clone https://github.com/USERNAME/plantscope.git
 
-# 3. Buat branch baru
-git checkout -b fitur/nama-fitur-anda
+# 3. Create a new branch
+git checkout -b feature/your-feature-name
 
-# 4. Lakukan perubahan, lalu commit
-git commit -m "feat: tambahkan [deskripsi singkat]"
+# 4. Make your changes, then commit
+git commit -m "feat: add [brief description]"
 
-# 5. Push dan buat Pull Request
-git push origin fitur/nama-fitur-anda
+# 5. Push and open a Pull Request
+git push origin feature/your-feature-name
 ```
 
-> Tidak harus jago coding untuk berkontribusi. Feedback penggunaan, data uji, atau dokumentasi sama berharganya dengan kode.
+> You don't need to be an expert coder to contribute. Usage feedback, test data, or documentation are just as valuable as code.
 
 ---
 
-## 🧬 Konteks Riset
+## 🧬 Research Context
 
-Proyek ini dikembangkan sebagai alat bantu untuk riset ekologi tanaman tropis, dengan fokus pada:
+This project was developed as a supporting tool for tropical plant ecology research, with a focus on:
 
-- **Fenotipe daun** dalam konteks perubahan iklim dan fragmentasi habitat
-- **Morfologi stomata** sebagai indikator adaptasi fisiologis
-- **Morfometri sel epidermis** pada tanaman Zingiberaceae (*Globba*, *Zingiber*, dll.)
-- Integrasi data fenotipe mikroskopi dengan data **GIS, ekologi polinasi, dan genomik**
+- **Leaf phenotypes** in the context of climate change and habitat fragmentation
+- **Stomata morphology** as an indicator of physiological adaptation
+- **Epidermal cell morphometry** in Zingiberaceae plants (*Globba*, *Zingiber*, etc.)
+- Integration of microscopy phenotype data with **GIS, pollination ecology, and genomics** data
 
-Jika penelitian Anda bersinggungan dengan topik-topik di atas, sangat terbuka untuk diskusi kolaborasi riset.
+If your research intersects with any of these topics, research collaboration discussions are very welcome.
 
 ---
 
-## 📁 Struktur Repositori
+## 📁 Repository Structure
 
 ```
 plantscope/
 │
-├── plant-phenotyping.html    # Aplikasi utama (single-file)
-├── README.md                 # Dokumentasi ini
+├── plant-phenotyping.html    # Main application entry point
+├── bulletin.html             # Project task board (bugs & features)
+├── README.md                 # Documentation (Indonesian)
+├── README_EN.md              # This file (English)
 ├── LICENSE                   # MIT License
 │
-├── docs/                     # (akan datang) Dokumentasi teknis
-├── data/                     # (akan datang) Data uji dan referensi
-└── algorithms/               # (akan datang) Modul algoritma segmentasi
+├── css/
+│   ├── variables.css         # Design tokens (colors, spacing, typography)
+│   ├── base.css              # Global reset, animations, scrollbar
+│   ├── layout.css            # Header, sidebar, responsive breakpoints
+│   └── components.css        # Cards, buttons, canvas, table, badges
+│
+├── js/
+│   ├── main.js               # Entry point — wires all modules
+│   ├── state.js              # Shared application state
+│   ├── canvas.js             # Canvas tools, upload, measurements
+│   ├── charts.js             # Histogram, stomata, vascular charts
+│   ├── export.js             # CSV / JSON / text / print export
+│   └── nav.js                # Clock and time display
+│
+├── docs/                     # (coming soon) Technical documentation
+├── data/                     # (coming soon) Test and reference data
+└── algorithms/               # (coming soon) Segmentation algorithm modules
 ```
 
 ---
 
-## 📜 Lisensi
+## 📜 License
 
-Proyek ini dilisensikan di bawah **MIT License** — bebas digunakan, dimodifikasi, dan didistribusikan, termasuk untuk keperluan akademik dan komersial, selama atribusi dipertahankan.
+This project is licensed under the **MIT License** — free to use, modify, and distribute, including for academic and commercial purposes, as long as attribution is maintained.
 
 ---
 
-## 📬 Kontak
+## 📬 Contact
 
-Dikembangkan oleh **Nurcahyo Widyodaru Saputro**  
-Dosen Agroteknologi · Universitas Singaperbangsa Karawang  
-Spesialisasi: Ekologi, Biodiversitas, & Riset Interdisipliner
+Developed by **Nurcahyo Widyodaru Saputro**  
+Lecturer in Agrotechnology · Universitas Singaperbangsa Karawang  
+Specialization: Ecology, Biodiversity, & Interdisciplinary Research
 
-Untuk diskusi riset, kolaborasi, atau pertanyaan teknis — silakan buka [Issue](../../issues) atau hubungi melalui profil GitHub.
+For research discussions, collaboration, or technical questions — please open an [Issue](../../issues) or reach out via the GitHub profile.
 
 ---
 
 <div align="center">
-  <sub>Dibuat dengan 🔬 untuk komunitas riset tanaman Indonesia dan dunia</sub>
+  <sub>Made with 🔬 for the Indonesian and global plant research community</sub>
 </div>
