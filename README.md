@@ -129,8 +129,8 @@ plantscope/
 │
 ├── plant-phenotyping.html    # Main application entry point
 ├── bulletin.html             # Project task board (bugs & features)
-├── README.md                 # Documentation (Indonesian)
-├── README_EN.md              # This file (English)
+├── README.md                 # This file (English)
+├── README_ID.md              # Documentation (Indonesian)
 ├── LICENSE                   # MIT License
 │
 ├── css/
