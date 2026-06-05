@@ -26,13 +26,15 @@ function initDOM() {
 }
 
 /* ===== LANGUAGE ===== */
-var currentLang = 'id';
+var currentLang = 'en';
 
 var i18n = {
   id: {
     'section-analysis'   : 'Analisis',
     'section-data'       : 'Data',
     'nav-upload'         : 'Unggah Gambar',
+    'nav-detection'      : 'Deteksi Sel',
+    'nav-segmentation'   : 'Segmentasi Jaringan',
     'nav-morphology'     : 'Morfologi Sel',
     'nav-stomata'        : 'Indeks Stomata',
     'nav-vascular'       : 'Jaringan Pembuluh',
@@ -63,6 +65,24 @@ var i18n = {
     'seg-meso'           : 'Sel mesofil',
     'seg-stoma'          : 'Stomata',
     'seg-other'          : 'Lainnya',
+    'detect-title'       : 'Deteksi Sel',
+    'detect-sub'         : 'Pencacahan otomatis sel dari gambar mikroskop',
+    'detect-stat-count'  : 'Sel terdeteksi',
+    'detect-stat-area'   : 'Rerata luas sel',
+    'detect-stat-method' : 'Metode deteksi',
+    'detect-card-results': 'Hasil Deteksi',
+    'detect-no-result'   : 'Belum ada deteksi. Unggah gambar dan jalankan Deteksi Sel di panel Unggah.',
+    'detect-btn-go'      : '📤 Buka Panel Unggah',
+    'detect-card-dist'   : 'Distribusi Ukuran Sel',
+    'detect-card-method' : 'Metode Deteksi',
+    'detect-method-desc' : 'Fase 1 menggunakan OpenCV (threshold adaptif + kontur) tanpa data latih. Fase 2 menggunakan YOLOv8 bila akurasi tidak mencukupi.',
+    'seg-panel-title'    : 'Segmentasi Jaringan',
+    'seg-panel-sub'      : 'Klasifikasi dan proporsi jaringan daun berdasarkan analisis gambar',
+    'seg-card-detail'    : 'Detail Segmentasi',
+    'seg-btn-go'         : '📤 Buka Panel Unggah',
+    'seg-card-chart'     : 'Proporsi Jaringan',
+    'seg-card-method'    : 'Metode Segmentasi',
+    'seg-method-desc'    : 'K-means (k=4) pada ruang warna LAB/HSV untuk jaringan berwarna; segmentasi watershed untuk gambar grayscale.',
     'morph-title'        : 'Pengukuran Morfologi Sel',
     'morph-sub'          : 'Parameter morfometri sel epidermis dan mesofil daun',
     'stoma-title'        : 'Indeks & Morfologi Stomata',
@@ -87,6 +107,8 @@ var i18n = {
     'section-analysis'   : 'Analysis',
     'section-data'       : 'Data',
     'nav-upload'         : 'Upload Image',
+    'nav-detection'      : 'Cell Detection',
+    'nav-segmentation'   : 'Tissue Segmentation',
     'nav-morphology'     : 'Cell Morphology',
     'nav-stomata'        : 'Stomata Index',
     'nav-vascular'       : 'Vascular Tissue',
@@ -117,6 +139,24 @@ var i18n = {
     'seg-meso'           : 'Mesophyll cells',
     'seg-stoma'          : 'Stomata',
     'seg-other'          : 'Other',
+    'detect-title'       : 'Cell Detection',
+    'detect-sub'         : 'Automatic cell counting from microscopy images',
+    'detect-stat-count'  : 'Cells detected',
+    'detect-stat-area'   : 'Mean cell area',
+    'detect-stat-method' : 'Detection method',
+    'detect-card-results': 'Detection Results',
+    'detect-no-result'   : 'No detection yet. Upload an image and run Cell Detection in the Upload panel.',
+    'detect-btn-go'      : '📤 Open Upload Panel',
+    'detect-card-dist'   : 'Cell Size Distribution',
+    'detect-card-method' : 'Detection Method',
+    'detect-method-desc' : 'Phase 1 uses OpenCV (adaptive threshold + contours) with no training data. Phase 2 uses YOLOv8 when accuracy is insufficient.',
+    'seg-panel-title'    : 'Tissue Segmentation',
+    'seg-panel-sub'      : 'Leaf tissue classification and composition from image analysis',
+    'seg-card-detail'    : 'Segmentation Detail',
+    'seg-btn-go'         : '📤 Open Upload Panel',
+    'seg-card-chart'     : 'Tissue Proportions',
+    'seg-card-method'    : 'Segmentation Method',
+    'seg-method-desc'    : 'K-means (k=4) on LAB/HSV colour space for stained tissue; watershed segmentation for greyscale images.',
     'morph-title'        : 'Cell Morphology Measurements',
     'morph-sub'          : 'Morphometric parameters of epidermal and mesophyll cells',
     'stoma-title'        : 'Stomata Index & Morphology',
@@ -187,6 +227,8 @@ function showPanel(name, el) {
     if (!panel) { console.error('Panel "panel-' + name + '" not found'); return; }
     panel.classList.add('active');
     if (el) el.classList.add('active');
+    if (name === 'detection')   setTimeout(drawDetectHist, 100);
+    if (name === 'segmentation') setTimeout(drawSegChart, 100);
     if (name === 'morphology') { setTimeout(drawHistogram, 100); updateMeasList(); }
     if (name === 'stomata')    setTimeout(drawStomaChart, 100);
     if (name === 'vascular')   setTimeout(drawVascChart,  100);
@@ -340,6 +382,19 @@ function detectCells() {
     info.textContent = currentLang === 'en'
       ? '✓ Detected ' + count + ' cells · calibration ' + appState.pixPerUm + ' px/µm'
       : '✓ Terdeteksi ' + count + ' sel · kalibrasi ' + appState.pixPerUm + ' px/µm';
+    var dc = document.getElementById('detectCount');
+    if (dc) dc.textContent = count;
+    var noResult = document.getElementById('detectNoResult');
+    if (noResult) noResult.style.display = 'none';
+    var rl = document.getElementById('detectResultList');
+    if (rl) {
+      var cellLabel = currentLang === 'en' ? 'Cell' : 'Sel';
+      var calibLabel = currentLang === 'en' ? 'Calibration' : 'Kalibrasi';
+      rl.innerHTML =
+        '<li><span class="metric-label">' + (currentLang === 'en' ? 'Cells detected' : 'Sel terdeteksi') + '</span><span class="metric-value">' + count + '</span></li>' +
+        '<li><span class="metric-label">' + calibLabel + '</span><span class="metric-value">' + appState.pixPerUm + '<span class="metric-unit">px/µm</span></span></li>' +
+        '<li><span class="metric-label">' + (currentLang === 'en' ? 'Method' : 'Metode') + '</span><span class="metric-value">OpenCV (mock)</span></li>';
+    }
   } catch (err) {
     console.error('detectCells:', err);
   }
@@ -544,6 +599,72 @@ function drawVascChart() {
   }
 }
 
+function drawDetectHist() {
+  try {
+    var c = document.getElementById('detectHistCanvas');
+    if (!c) return;
+    var cx = c.getContext('2d');
+    var data   = [3, 8, 17, 28, 24, 15, 7, 2];
+    var labels = ['<20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '>80'];
+    var W = c.width, H = c.height, pl = 35, pb = 30, pt = 10, pr = 10;
+    cx.clearRect(0, 0, W, H);
+    var max = Math.max.apply(null, data);
+    var bw  = (W - pl - pr) / data.length;
+    data.forEach(function (v, i) {
+      var bh = (H - pb - pt) * v / max;
+      var bx = pl + i * bw + 2, by = H - pb - bh;
+      cx.fillStyle = 'rgba(29,158,117,' + (0.4 + 0.6 * (v / max)) + ')';
+      cx.fillRect(bx, by, bw - 4, bh);
+      cx.fillStyle = '#8b949e'; cx.font = '9px DM Mono,monospace'; cx.textAlign = 'center';
+      cx.fillText(labels[i], bx + (bw - 4) / 2, H - 8);
+      if (v > 0) { cx.fillStyle = '#5DCAA5'; cx.fillText(v, bx + (bw - 4) / 2, by - 3); }
+    });
+    cx.strokeStyle = 'rgba(255,255,255,0.1)'; cx.lineWidth = 0.5;
+    cx.beginPath(); cx.moveTo(pl, pt); cx.lineTo(pl, H - pb); cx.lineTo(W - pr, H - pb); cx.stroke();
+    cx.fillStyle = '#484f58'; cx.font = '9px DM Mono,monospace'; cx.textAlign = 'center';
+    cx.fillText(currentLang === 'en' ? 'Cell size (µm)' : 'Ukuran sel (µm)', W / 2, H);
+    cx.save(); cx.translate(10, H / 2); cx.rotate(-Math.PI / 2);
+    cx.fillText(currentLang === 'en' ? 'n cells' : 'n sel', 0, 0); cx.restore();
+  } catch (err) { console.error('drawDetectHist:', err); }
+}
+
+function drawSegChart() {
+  try {
+    var c = document.getElementById('segChart');
+    if (!c) return;
+    var cx = c.getContext('2d');
+    var W = c.width, H = c.height;
+    cx.clearRect(0, 0, W, H);
+    var labels = currentLang === 'en'
+      ? ['Epidermis', 'Mesophyll', 'Stomata', 'Other']
+      : ['Epidermis', 'Mesofil', 'Stomata', 'Lainnya'];
+    var vals   = [38, 44, 12, 6];
+    var colors = ['#1D9E75', '#639922', '#BA7517', '#484f58'];
+    var cx0 = W / 2, cy0 = H / 2 - 14, r = 72, rInner = 38;
+    var start = -Math.PI / 2;
+    vals.forEach(function (v, i) {
+      var slice = (v / 100) * 2 * Math.PI;
+      cx.beginPath();
+      cx.arc(cx0, cy0, r, start, start + slice);
+      cx.arc(cx0, cy0, rInner, start + slice, start, true);
+      cx.closePath(); cx.fillStyle = colors[i]; cx.fill();
+      var midA = start + slice / 2;
+      if (v >= 10) {
+        cx.fillStyle = '#e6edf3'; cx.font = 'bold 11px DM Mono,monospace'; cx.textAlign = 'center';
+        cx.fillText(v + '%', cx0 + (r * 0.68) * Math.cos(midA), cy0 + (r * 0.68) * Math.sin(midA) + 4);
+      }
+      start += slice;
+    });
+    labels.forEach(function (lbl, i) {
+      var y = H - 56 + Math.floor(i / 2) * 18;
+      var x = i % 2 === 0 ? 20 : W / 2 + 10;
+      cx.fillStyle = colors[i]; cx.fillRect(x, y, 10, 10);
+      cx.fillStyle = '#8b949e'; cx.font = '10px DM Sans,sans-serif'; cx.textAlign = 'left';
+      cx.fillText(lbl, x + 14, y + 9);
+    });
+  } catch (err) { console.error('drawSegChart:', err); }
+}
+
 /* ===== EXPORT ===== */
 function downloadFile(filename, content, mime) {
   var a = document.createElement('a');
@@ -622,6 +743,7 @@ function printReport() { window.print(); }
 
 /* ===== INIT ===== */
 document.addEventListener('DOMContentLoaded', function () {
+  applyLang();
   updateTime();
   setInterval(updateTime, 30000);
   initDropZone();

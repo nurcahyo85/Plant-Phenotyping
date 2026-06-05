@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +21,7 @@
     <span><span class="status-dot"></span><span data-i18n="system-status">Sistem aktif</span></span>
     <span id="headerTime">—</span>
     <span>v1.0 · Agroteknologi</span>
-    <button class="lang-toggle" id="langToggle" onclick="toggleLang()">🌐 EN</button>
+    <button class="lang-toggle" id="langToggle" onclick="toggleLang()">🌐 ID</button>
   </div>
 </header>
 
@@ -31,6 +31,12 @@
       <div class="sidebar-label" data-i18n="section-analysis">Analisis</div>
       <div class="nav-item active" onclick="showPanel('upload',this)">
         <span class="nav-icon">📤</span> <span data-i18n="nav-upload">Unggah Gambar</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('detection',this)">
+        <span class="nav-icon">🔵</span> <span data-i18n="nav-detection">Deteksi Sel</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('segmentation',this)">
+        <span class="nav-icon">🧩</span> <span data-i18n="nav-segmentation">Segmentasi Jaringan</span>
       </div>
       <div class="nav-item" onclick="showPanel('morphology',this)">
         <span class="nav-icon">📐</span> <span data-i18n="nav-morphology">Morfologi Sel</span>
@@ -155,6 +161,123 @@
               </div>
               <div id="detectedInfo" style="margin-top:10px;font-size:11px;color:var(--text3);display:none;"></div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL: DETECTION -->
+    <div id="panel-detection" class="panel">
+      <div class="page-title" data-i18n="detect-title">Deteksi Sel</div>
+      <div class="page-sub" data-i18n="detect-sub">Pencacahan otomatis sel dari gambar mikroskop</div>
+      <div class="grid-3">
+        <div class="stat-card">
+          <div class="stat-num" id="detectCount">—</div>
+          <div class="stat-lbl" data-i18n="detect-stat-count">Sel terdeteksi</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="detectAvgArea">—<span>µm²</span></div>
+          <div class="stat-lbl" data-i18n="detect-stat-area">Rerata luas sel</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="detectMethod">CV</div>
+          <div class="stat-lbl" data-i18n="detect-stat-method">Metode deteksi</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="card">
+            <div class="card-head"><span class="icon">🔵</span><span data-i18n="detect-card-results">Hasil Deteksi</span></div>
+            <ul class="metric-list" id="detectResultList">
+              <li style="color:var(--text3);font-size:12px;justify-content:center;" id="detectNoResult" data-i18n="detect-no-result">
+                Belum ada deteksi. Unggah gambar dan jalankan Deteksi Sel di panel Unggah.
+              </li>
+            </ul>
+            <div class="action-row">
+              <button class="btn-primary" onclick="showPanel('upload',document.querySelectorAll('.nav-item')[0])" data-i18n="detect-btn-go">📤 Buka Panel Unggah</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-head"><span class="icon">📊</span><span data-i18n="detect-card-dist">Distribusi Ukuran Sel</span></div>
+            <canvas id="detectHistCanvas" width="320" height="160"></canvas>
+          </div>
+          <div class="card" style="margin-top:1rem;">
+            <div class="card-head"><span class="icon">💡</span><span data-i18n="detect-card-method">Metode Deteksi</span></div>
+            <p style="font-size:12px;color:var(--text2);line-height:1.7;" data-i18n="detect-method-desc">
+              Fase 1 menggunakan OpenCV (threshold adaptif + kontur) tanpa data latih. Fase 2 menggunakan YOLOv8 bila akurasi tidak mencukupi.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL: SEGMENTATION -->
+    <div id="panel-segmentation" class="panel">
+      <div class="page-title" data-i18n="seg-panel-title">Segmentasi Jaringan</div>
+      <div class="page-sub" data-i18n="seg-panel-sub">Klasifikasi dan proporsi jaringan daun berdasarkan analisis gambar</div>
+      <div class="grid-4">
+        <div class="stat-card">
+          <div class="stat-num" id="segStatEpid">38<span>%</span></div>
+          <div class="stat-lbl" data-i18n="seg-epid">Sel epidermis</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="segStatMeso">44<span>%</span></div>
+          <div class="stat-lbl" data-i18n="seg-meso">Sel mesofil</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="segStatStoma">12<span>%</span></div>
+          <div class="stat-lbl" data-i18n="seg-stoma">Stomata</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="segStatOther">6<span>%</span></div>
+          <div class="stat-lbl" data-i18n="seg-other">Lainnya</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="card">
+            <div class="card-head"><span class="icon">🧩</span><span data-i18n="seg-card-detail">Detail Segmentasi</span></div>
+            <div class="seg-item" style="margin-bottom:14px;">
+              <div class="seg-dot" style="background:#1D9E75"></div>
+              <span class="seg-name" data-i18n="seg-epid">Sel epidermis</span>
+              <div class="seg-bar-wrap"><div class="seg-bar-fill" id="segBarEpid" style="width:38%;background:#1D9E75"></div></div>
+              <span class="seg-pct" id="segPctEpid">38%</span>
+            </div>
+            <div class="seg-item" style="margin-bottom:14px;">
+              <div class="seg-dot" style="background:#639922"></div>
+              <span class="seg-name" data-i18n="seg-meso">Sel mesofil</span>
+              <div class="seg-bar-wrap"><div class="seg-bar-fill" id="segBarMeso" style="width:44%;background:#639922"></div></div>
+              <span class="seg-pct" id="segPctMeso">44%</span>
+            </div>
+            <div class="seg-item" style="margin-bottom:14px;">
+              <div class="seg-dot" style="background:#BA7517"></div>
+              <span class="seg-name" data-i18n="seg-stoma">Stomata</span>
+              <div class="seg-bar-wrap"><div class="seg-bar-fill" id="segBarStoma" style="width:12%;background:#BA7517"></div></div>
+              <span class="seg-pct" id="segPctStoma">12%</span>
+            </div>
+            <div class="seg-item">
+              <div class="seg-dot" style="background:#484f58"></div>
+              <span class="seg-name" data-i18n="seg-other">Lainnya</span>
+              <div class="seg-bar-wrap"><div class="seg-bar-fill" id="segBarOther" style="width:6%;background:#484f58"></div></div>
+              <span class="seg-pct" id="segPctOther">6%</span>
+            </div>
+            <div class="action-row" style="margin-top:1.5rem;">
+              <button class="btn-primary" onclick="showPanel('upload',document.querySelectorAll('.nav-item')[0])" data-i18n="seg-btn-go">📤 Buka Panel Unggah</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-head"><span class="icon">📊</span><span data-i18n="seg-card-chart">Proporsi Jaringan</span></div>
+            <canvas id="segChart" width="300" height="220"></canvas>
+          </div>
+          <div class="card" style="margin-top:1rem;">
+            <div class="card-head"><span class="icon">💡</span><span data-i18n="seg-card-method">Metode Segmentasi</span></div>
+            <p style="font-size:12px;color:var(--text2);line-height:1.7;" data-i18n="seg-method-desc">
+              K-means (k=4) pada ruang warna LAB/HSV untuk jaringan berwarna; segmentasi watershed untuk gambar grayscale.
+            </p>
           </div>
         </div>
       </div>
